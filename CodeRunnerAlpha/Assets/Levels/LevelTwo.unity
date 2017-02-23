@@ -265,7 +265,11 @@ MonoBehaviour:
   rightButtonTexture: {fileID: 388387708}
   leftButtonTexture: {fileID: 1446333276}
   repeatButtonTexture: {fileID: 138457059}
-  runButtonTexture: {fileID: 0}
+  repeatButtonTexture0: {fileID: 1934179810}
+  repeatButtonTexture1: {fileID: 425321736}
+  repeatButtonTexture2: {fileID: 2065985165}
+  repeatButtonTexture3: {fileID: 725697846}
+  repeatButtonTexture4: {fileID: 1412312120}
 --- !u!131 &138457059
 GUITexture:
   m_ObjectHideFlags: 0
@@ -815,7 +819,11 @@ MonoBehaviour:
   rightButtonTexture: {fileID: 388387708}
   leftButtonTexture: {fileID: 1446333276}
   repeatButtonTexture: {fileID: 138457059}
-  runButtonTexture: {fileID: 0}
+  repeatButtonTexture0: {fileID: 1934179810}
+  repeatButtonTexture1: {fileID: 425321736}
+  repeatButtonTexture2: {fileID: 2065985165}
+  repeatButtonTexture3: {fileID: 725697846}
+  repeatButtonTexture4: {fileID: 1412312120}
 --- !u!131 &306913921
 GUITexture:
   m_ObjectHideFlags: 0
@@ -1343,7 +1351,11 @@ MonoBehaviour:
   rightButtonTexture: {fileID: 388387708}
   leftButtonTexture: {fileID: 1446333276}
   repeatButtonTexture: {fileID: 138457059}
-  runButtonTexture: {fileID: 0}
+  repeatButtonTexture0: {fileID: 1934179810}
+  repeatButtonTexture1: {fileID: 425321736}
+  repeatButtonTexture2: {fileID: 2065985165}
+  repeatButtonTexture3: {fileID: 725697846}
+  repeatButtonTexture4: {fileID: 1412312120}
 --- !u!131 &388387708
 GUITexture:
   m_ObjectHideFlags: 0
@@ -1491,6 +1503,54 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!1 &425321734
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 425321735}
+  - component: {fileID: 425321736}
+  m_Layer: 0
+  m_Name: repeat1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &425321735
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 425321734}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.12, y: -0.8, z: -1}
+  m_LocalScale: {x: 0.22, y: 0.099999994, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1616237316}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!131 &425321736
+GUITexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 425321734}
+  m_Enabled: 1
+  m_Texture: {fileID: 2800000, guid: f162e18da70e46a428867949365dd1fd, type: 3}
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+  m_PixelInset:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  m_LeftBorder: 0
+  m_RightBorder: 0
+  m_TopBorder: 0
+  m_BottomBorder: 0
 --- !u!1 &434423702
 GameObject:
   m_ObjectHideFlags: 0
@@ -2768,6 +2828,54 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!1 &725697844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 725697845}
+  - component: {fileID: 725697846}
+  m_Layer: 0
+  m_Name: repeat3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &725697845
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 725697844}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.12, y: -0.8, z: -1}
+  m_LocalScale: {x: 0.22, y: 0.099999994, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1616237316}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!131 &725697846
+GUITexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 725697844}
+  m_Enabled: 1
+  m_Texture: {fileID: 2800000, guid: c71024ec0a6d4794dabdd6b80681298f, type: 3}
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+  m_PixelInset:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  m_LeftBorder: 0
+  m_RightBorder: 0
+  m_TopBorder: 0
+  m_BottomBorder: 0
 --- !u!1 &727322879
 GameObject:
   m_ObjectHideFlags: 0
@@ -4686,7 +4794,11 @@ MonoBehaviour:
   rightButtonTexture: {fileID: 388387708}
   leftButtonTexture: {fileID: 1446333276}
   repeatButtonTexture: {fileID: 138457059}
-  runButtonTexture: {fileID: 0}
+  repeatButtonTexture0: {fileID: 1934179810}
+  repeatButtonTexture1: {fileID: 425321736}
+  repeatButtonTexture2: {fileID: 2065985165}
+  repeatButtonTexture3: {fileID: 725697846}
+  repeatButtonTexture4: {fileID: 1412312120}
 --- !u!1 &1114272350
 GameObject:
   m_ObjectHideFlags: 0
@@ -5736,6 +5848,54 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!1 &1412312118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1412312119}
+  - component: {fileID: 1412312120}
+  m_Layer: 0
+  m_Name: repeat4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1412312119
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1412312118}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.12, y: -0.8, z: -1}
+  m_LocalScale: {x: 0.22, y: 0.099999994, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1616237316}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!131 &1412312120
+GUITexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1412312118}
+  m_Enabled: 1
+  m_Texture: {fileID: 2800000, guid: 8b5674054c62a324086f89613fd03b86, type: 3}
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+  m_PixelInset:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  m_LeftBorder: 0
+  m_RightBorder: 0
+  m_TopBorder: 0
+  m_BottomBorder: 0
 --- !u!1 &1438543036
 GameObject:
   m_ObjectHideFlags: 0
@@ -5811,7 +5971,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300016, guid: 88201dd22627f4e4aaabfc2e8625d0cb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5958,7 +6118,11 @@ MonoBehaviour:
   rightButtonTexture: {fileID: 388387708}
   leftButtonTexture: {fileID: 1446333276}
   repeatButtonTexture: {fileID: 138457059}
-  runButtonTexture: {fileID: 0}
+  repeatButtonTexture0: {fileID: 0}
+  repeatButtonTexture1: {fileID: 0}
+  repeatButtonTexture2: {fileID: 0}
+  repeatButtonTexture3: {fileID: 0}
+  repeatButtonTexture4: {fileID: 0}
 --- !u!131 &1446333276
 GUITexture:
   m_ObjectHideFlags: 0
@@ -6794,6 +6958,11 @@ Transform:
   - {fileID: 388387706}
   - {fileID: 1446333274}
   - {fileID: 138457057}
+  - {fileID: 725697845}
+  - {fileID: 1934179809}
+  - {fileID: 1412312119}
+  - {fileID: 425321735}
+  - {fileID: 2065985164}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7925,6 +8094,54 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1934179808
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1934179809}
+  - component: {fileID: 1934179810}
+  m_Layer: 0
+  m_Name: repeat0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1934179809
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1934179808}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.12, y: -0.8, z: -1}
+  m_LocalScale: {x: 0.22, y: 0.099999994, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1616237316}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!131 &1934179810
+GUITexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1934179808}
+  m_Enabled: 1
+  m_Texture: {fileID: 2800000, guid: a44fccd4352b27d42bf1e826fa26968b, type: 3}
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+  m_PixelInset:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  m_LeftBorder: 0
+  m_RightBorder: 0
+  m_TopBorder: 0
+  m_BottomBorder: 0
 --- !u!1 &1943564547
 GameObject:
   m_ObjectHideFlags: 0
@@ -8343,6 +8560,54 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!1 &2065985163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2065985164}
+  - component: {fileID: 2065985165}
+  m_Layer: 0
+  m_Name: repeat2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2065985164
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2065985163}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.12, y: -0.8, z: -1}
+  m_LocalScale: {x: 0.22, y: 0.099999994, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1616237316}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!131 &2065985165
+GUITexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2065985163}
+  m_Enabled: 1
+  m_Texture: {fileID: 2800000, guid: 65739069643b98c4485d156e93feba2b, type: 3}
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+  m_PixelInset:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  m_LeftBorder: 0
+  m_RightBorder: 0
+  m_TopBorder: 0
+  m_BottomBorder: 0
 --- !u!1 &2083311042
 GameObject:
   m_ObjectHideFlags: 0

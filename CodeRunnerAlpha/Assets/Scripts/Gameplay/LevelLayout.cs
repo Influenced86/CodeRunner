@@ -8,9 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelLayout : MonoBehaviour {
 
-    delegate void aDelegate();
-    aDelegate controlDelegate;
-
+    
     //// - VARIABLES -------------------------- ///// ----------
     // - GAME OBJECTS - //
     public GameObject   playerObject = null;
@@ -34,7 +32,7 @@ public class LevelLayout : MonoBehaviour {
     public static bool  isChestTextEnabled = false;
     public bool         isChestFound = false;
     private static int  levelNumber = 1;
-    public static int   repeat;
+    
     //// ------------------------------------------------------
 
     //// - METHODS -------------------------///////------------
@@ -93,6 +91,10 @@ public class LevelLayout : MonoBehaviour {
                     SceneManager.LoadScene("LevelFour");
                     levelNumber = 4;
                     break;
+                case 4:
+                    SceneManager.LoadScene("LevelFive");
+                    levelNumber = 5;
+                    break;
             }
         }
     }
@@ -118,6 +120,8 @@ public class LevelLayout : MonoBehaviour {
         }
     }
 
+   
+
 
     // - TILE CHECKS - Each function checks the tiles closest to the current tile to find out  
     // whether the player can move to that tile and if so, make the appropriate movement and update
@@ -129,9 +133,9 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Open:
                 if (PlayerControls.isForwardTouched)
                 {
-                    // Make sure that if repeat is active, the player moves faster
-                    if (repeat >= 0)        moveSpeed = repeatSpeed;
-                    else                    moveSpeed = standardSpeed;
+                    // Make sure that if PlayerControls.PlayerControls.repeat is active, the player moves faster
+                    if (PlayerControls.repeat >= 0)        moveSpeed = repeatSpeed;
+                    else                                   moveSpeed = standardSpeed;
 
                     // Setup the movement from one tile to the next
                     MoveCheck();
@@ -147,16 +151,16 @@ public class LevelLayout : MonoBehaviour {
                         moveCheck = false;
                         playerAnim.SetBool("Forward", false);
 
-                        // If the repeat button has been pressed, keep recalling the method untill repeat = 0
-                        if (repeat > 0 && currentPositionIndex <= 43)
+                        // If the PlayerControls.repeat button has been pressed, keep recalling the method untill PlayerControls.repeat = 0
+                        if (PlayerControls.repeat > 0 && currentPositionIndex <= 43)
                         {
-                            repeat--;
-                            Debug.Log(repeat);
+                            PlayerControls.repeat--;
+                            Debug.Log(PlayerControls.repeat);
                             PlayerControls.isForwardTouched = true;
                             ForwardCheck();
                         }
-                        // If repeat is now zero, make sure the player no longer has speed increase
-                        else    repeat = -1;
+                        // If PlayerControls.repeat is now zero, make sure the player no longer has speed increase
+                        else    PlayerControls.repeat = -1;
                     }
                 }
                 break;
@@ -165,8 +169,8 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Wall:
                 if (PlayerControls.isForwardTouched)
                 {
-                    // If the player's next move is a wall, stop the repeat speed bonus
-                    if (repeat > 0)     repeat = -1;
+                    // If the player's next move is a wall, stop the PlayerControls.repeat speed bonus
+                    if (PlayerControls.repeat > 0)     PlayerControls.repeat = -1;
                     
                     Debug.Log("Cannot move forward! Wall ahead!");
                     // - Makes sure current position remains the same in this case (Player was originally
@@ -179,7 +183,7 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Slow:
                 if (PlayerControls.isForwardTouched)
                 {
-                    if (repeat >= 0)     moveSpeed = repeatSpeed * 0.5f;
+                    if (PlayerControls.repeat >= 0)     moveSpeed = repeatSpeed * 0.5f;
                     else                 moveSpeed = slowSpeed;
                     
                     MoveCheck();
@@ -194,14 +198,14 @@ public class LevelLayout : MonoBehaviour {
                         moveCheck = false;
                         playerAnim.SetBool("Forward", false);
 
-                        if (repeat > 0)
+                        if (PlayerControls.repeat > 0)
                         {
-                            repeat--;
-                            Debug.Log(repeat);
+                            PlayerControls.repeat--;
+                            Debug.Log(PlayerControls.repeat);
                             PlayerControls.isForwardTouched = true;
                             ForwardCheck();
                         }
-                        else    repeat = -1;
+                        else    PlayerControls.repeat = -1;
                     }
                 }
                 break;
@@ -215,7 +219,7 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Chest:
                 if (PlayerControls.isForwardTouched)
                 {
-                    if (repeat > 0)     repeat = -1;
+                    if (PlayerControls.repeat > 0)     PlayerControls.repeat = -1;
 
                     ChestCheck();                   
                     PlayerControls.isForwardTouched = false;
@@ -238,7 +242,7 @@ public class LevelLayout : MonoBehaviour {
                 if(PlayerControls.isRightTouched)
                 {
                     // WHAT
-                    if (repeat >= 0)    moveSpeed = repeatSpeed;
+                    if (PlayerControls.repeat >= 0)    moveSpeed = repeatSpeed;
                     else                moveSpeed = standardSpeed;
 
                     MoveCheck();
@@ -254,15 +258,15 @@ public class LevelLayout : MonoBehaviour {
                         moveCheck = false;
                         playerAnim.SetBool("Right", false);
 
-                        if (repeat > 0)
+                        if (PlayerControls.repeat > 0)
                         {
-                            repeat--;
-                            Debug.Log(repeat);
+                            PlayerControls.repeat--;
+                            Debug.Log(PlayerControls.repeat);
                             PlayerControls.isRightTouched = true;
                             RightCheck();
                         }
-                        // If repeat is now zero, make sure the player no longer has speed increase
-                        else repeat = -1;
+                        // If PlayerControls.repeat is now zero, make sure the player no longer has speed increase
+                        else PlayerControls.repeat = -1;
                     }
                    
                 }
@@ -271,7 +275,7 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Wall:
                 if (PlayerControls.isRightTouched)
                 {
-                    if (repeat > 0)      repeat = -1;
+                    if (PlayerControls.repeat > 0)      PlayerControls.repeat = -1;
                     Debug.Log("Cannot move right! Wall!");
                     currentPositionIndex -= 1;
                 }
@@ -292,14 +296,14 @@ public class LevelLayout : MonoBehaviour {
                         moveCheck = false;
                         playerAnim.SetBool("RIght", false);
 
-                        if (repeat > 0)
+                        if (PlayerControls.repeat > 0)
                         {
-                            repeat--;
-                            Debug.Log(repeat);
+                            PlayerControls.repeat--;
+                            Debug.Log(PlayerControls.repeat);
                             PlayerControls.isRightTouched = true;
                             RightCheck();
                         }
-                        else repeat = -1;
+                        else PlayerControls.repeat = -1;
                     }
 
                    
@@ -318,7 +322,7 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Chest:
                 if (PlayerControls.isRightTouched)
                 {
-                    if (repeat > 0)     repeat = -1;
+                    if (PlayerControls.repeat > 0)     PlayerControls.repeat = -1;
                     ChestCheck();
                     PlayerControls.isRightTouched = false;
                     // Don't allow text to be shown again after moving towards chest
@@ -337,7 +341,7 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Open:
                 if(PlayerControls.isLeftTouched)
                 {
-                    if (repeat >= 0)    moveSpeed = repeatSpeed;
+                    if (PlayerControls.repeat >= 0)    moveSpeed = repeatSpeed;
                     else                moveSpeed = standardSpeed;
 
                     MoveCheck();
@@ -352,10 +356,10 @@ public class LevelLayout : MonoBehaviour {
                         moveCheck = false;
                         playerAnim.SetBool("Left", false);
 
-                        if (repeat > 0)
+                        if (PlayerControls.repeat > 0)
                         {
-                            repeat--;
-                            Debug.Log(repeat);
+                            PlayerControls.repeat--;
+                            Debug.Log(PlayerControls.repeat);
                             PlayerControls.isLeftTouched = true;
                             LeftCheck();
                         }
@@ -367,7 +371,7 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Wall:
                 if(PlayerControls.isLeftTouched)
                 {
-                    if (repeat > 0)     repeat = -1;
+                    if (PlayerControls.repeat > 0)     PlayerControls.repeat = -1;
                     Debug.Log("Cannot move left! Wall!");
                     currentPositionIndex += 1;
                 }
@@ -376,7 +380,7 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Slow:
                 if (PlayerControls.isLeftTouched)
                 {
-                    if (repeat >= 0)    moveSpeed = repeatSpeed;
+                    if (PlayerControls.repeat >= 0)    moveSpeed = repeatSpeed;
                     else                moveSpeed = standardSpeed;
 
                     moveSpeed = slowSpeed;
@@ -391,14 +395,14 @@ public class LevelLayout : MonoBehaviour {
                         moveCheck = false;
                         playerAnim.SetBool("Left", false);
 
-                        if (repeat > 0)
+                        if (PlayerControls.repeat > 0)
                         {
-                            repeat--;
-                            Debug.Log(repeat);
+                            PlayerControls.repeat--;
+                            Debug.Log(PlayerControls.repeat);
                             PlayerControls.isLeftTouched = true;
                             LeftCheck();
                         }
-                        else    repeat = -1;
+                        else    PlayerControls.repeat = -1;
                     }
                 }
                 break;
@@ -415,7 +419,7 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Chest:
                 if (PlayerControls.isLeftTouched)
                 {
-                    if (repeat >= 0)    repeat = -1;
+                    if (PlayerControls.repeat >= 0)    PlayerControls.repeat = -1;
                     ChestCheck();
                     PlayerControls.isLeftTouched = false;
                     // Don't allow text to be shown again after moving towards chest
@@ -435,11 +439,11 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Open:
                 if (PlayerControls.isBackwardTouched)
                 {
-                    if (repeat >= 0)     moveSpeed = repeatSpeed;
-                    else                 moveSpeed = standardSpeed;
+                    if (PlayerControls.repeat >= 0)     moveSpeed = repeatSpeed;
+                    else                                moveSpeed = standardSpeed;
 
                     MoveCheck();
-                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, NextBackwardPosition(), moveTime);
+                    playerObject.transform.position = Vector2.Lerp(playerObject.transform.position, NextBackwardPosition(), moveTime);
                     playerAnim.SetBool("Down", PlayerControls.isBackwardTouched);  
                       
                     // If player has reached next tile, then set new current position and stop player moving
@@ -452,16 +456,16 @@ public class LevelLayout : MonoBehaviour {
                         moveCheck = false;
                         playerAnim.SetBool("Down", false);
 
-                        // - If the repeat button has been pressed and the next move 
-                        // is inbounds, keep recalling the method untill repeat = 0 - //
-                        if (repeat > 0 && currentPositionIndex >= 6)
+                        // - If the PlayerControls.repeat button has been pressed and the next move 
+                        // is inbounds, keep recalling the method untill PlayerControls.repeat = 0 - //
+                        if (PlayerControls.repeat > 0 && currentPositionIndex >= 6)
                         {
-                            repeat--;
-                            Debug.Log(repeat);
+                            PlayerControls.repeat--;
+                            Debug.Log(PlayerControls.repeat);
                             PlayerControls.isBackwardTouched = true;
                             BackwardCheck();
                         }
-                        else    repeat = -1;
+                        else    PlayerControls.repeat = -1;
                     }
                 }
                 break;
@@ -470,7 +474,7 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Wall:
                 if (PlayerControls.isBackwardTouched)
                 {
-                    if (repeat > 0)      repeat = -1;
+                    if (PlayerControls.repeat > 0)      PlayerControls.repeat = -1;
                     Debug.Log("Cannot move backward! Wall behind!");
                     // - Makes sure current position remains the same in this case (Player was originally 
                     // automatically moving forward once the tile was later set to open - //
@@ -482,7 +486,7 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Slow:
                 if (PlayerControls.isBackwardTouched)
                 {
-                    if (repeat >= 0)     moveSpeed = repeatSpeed * 0.5f;
+                    if (PlayerControls.repeat >= 0)     moveSpeed = repeatSpeed * 0.5f;
                     else                 moveSpeed = slowSpeed;
                    
                     MoveCheck();
@@ -496,14 +500,14 @@ public class LevelLayout : MonoBehaviour {
                         moveCheck = false;
                         playerAnim.SetBool("Down", false);
 
-                        if (repeat > 0)
+                        if (PlayerControls.repeat > 0)
                         {
-                            repeat--;
-                            Debug.Log(repeat);
+                            PlayerControls.repeat--;
+                            Debug.Log(PlayerControls.repeat);
                             PlayerControls.isBackwardTouched = true;
                             BackwardCheck();
                         }
-                        else    repeat = -1;
+                        else    PlayerControls.repeat = -1;
                     }
                 }
                 break;
@@ -520,7 +524,7 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Chest:
                 if (PlayerControls.isBackwardTouched)
                 {
-                    if (repeat > 0)     repeat = -1;
+                    if (PlayerControls.repeat > 0)     PlayerControls.repeat = -1;
 
                     ChestCheck();
                     PlayerControls.isBackwardTouched = false;
@@ -536,32 +540,15 @@ public class LevelLayout : MonoBehaviour {
     }
 
 
-    private void Run()
-    {
-        if(PlayerControls.isRunTouched && PlayerControls.isRunForwardTouched)
-        {
-            Debug.Log(PlayerControls.isRunForwardTouched);
-            Debug.Log(PlayerControls.isRunTouched);
-            //controlDelegate += ForwardCheck;
-            //repeat++;
-
-        }
-        if (!PlayerControls.isRunTouched && !PlayerControls.isForwardTouched)
-        {
-            PlayerControls.isForwardTouched = true;
-            controlDelegate();
-           
-            controlDelegate -= ForwardCheck;
-
-        }
-    }
+    
 
 
     // - LEVEL SETUP - Runs each time level starts. Positions depend on what is set within 
     // the editor. Also initiates all tiles in chronological order from left to right - //
     private void LevelSetup() {
+        
         var pos = 0;
-        repeat = -1;
+        PlayerControls.repeat = -1;
         moveSpeed = standardSpeed;
         isChestTextEnabled = false;
         isChestFound = false;
@@ -603,8 +590,11 @@ public class LevelLayout : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        // Make sure we can only make a move if the next position is inbounds       
-        ForwardCheck();
+        // Make sure we can only make a move if the next position is inbounds     
+        if (currentPositionIndex <= 42)
+        {
+            ForwardCheck();
+        }
         if (currentPositionIndex >= 6)
         {
             BackwardCheck();
@@ -612,6 +602,7 @@ public class LevelLayout : MonoBehaviour {
         RightCheck();
         LeftCheck();
         chestTextTexture.gameObject.SetActive(isChestTextEnabled);
+
 
         //Run();
         
