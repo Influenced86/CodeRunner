@@ -2,6 +2,9 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
+
+// WELL HELLO THERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 // - Takes care of all the movement controls for the player. Sets up
 // when it's elible for the player to press any button. If a button
 // is successfully pressed, a specific bool for that button is set to
