@@ -1,0 +1,16 @@
+27th Feb 2017 update
+
+Most recent changes:
+
+Optimised code
+	-	 Reduced amount of methods needed for movement
+		-	NextTilePosition (Check what the transform position of the next tile is)
+		-	NextMoveCheck	 (Process next move no matter which direction)
+		-	Updated private and static variables and implemented getters and setters (rather than public static members)
+		-	Updated coding convention (_privateMemberVariables, _PrivateConstant, etc.)
+
+Removed HelperText Class
+	-	Changed all functionality to just the Helper class
+		-	Can now enable and disable helper activated text with the same helper button object (cannot yet remove auto popup texts)
+		-	Created new sprites for the helper buttons. Helper buttons now require the user to hold it down to show, and let go to remove
+			-	Texts now dissappear once the user drags their finger away from the texture

@@ -7,7 +7,7 @@ using System.Collections;
 
 public class TouchManager : MonoBehaviour {
 
-    public static bool isGuiTouched = false;
+   
 
     // - Gets the type of input from the user and sends an appropriate 
     // message to which PlayerControls takes care of
@@ -19,29 +19,32 @@ public class TouchManager : MonoBehaviour {
                 case TouchPhase.Began:
                     SendMessage("OnFirstTouchBegan");
                     //SendMessage("OnFirstTouch");
-                    isGuiTouched = true;
+                   
                     break;
 
                 case TouchPhase.Stationary:
                     SendMessage("OnFirstTouchStay");
-                    isGuiTouched = true;
+                    
                     break;
 
                 case TouchPhase.Moved:
-                    //SendMessage("OnFirstTouchMoved");
-                   // guiTouched = true;
+                    SendMessage("OnFirstTouchMoved");
+                   
                     break;
 
                 case TouchPhase.Ended:
                     SendMessage("OnFirstTouchEnd");
-                    isGuiTouched = false;
+                    
                     break;
             }
         }
     }
 
-	// Use this for initialization
-	void Start () {
+    
+
+
+    // Use this for initialization
+    void Start () {
 	
 	}
 	    

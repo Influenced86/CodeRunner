@@ -3,8 +3,6 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 
-// WELL HELLO THERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 // - Takes care of all the movement controls for the player. Sets up
 // when it's elible for the player to press any button. If a button
 // is successfully pressed, a specific bool for that button is set to
@@ -12,13 +10,33 @@ using UnityEngine.SceneManagement;
 
 public class PlayerControls : TouchManager {
 
-    public static int repeat;
+    private static int _repeat;
 
     //// - VARIABLES -------------------------- ///// ----------
     // - ENUMS - // -------------------------------
     public enum ButtonTypes { Forward, Backward, Left, Right, Repeat };
     public ButtonTypes buttonType;
     // --------------------------------------------
+
+    // - Enable or disable the button controls - //
+    private static bool _isForwardEnabled = true;
+    private static bool _isRightEnabled = false;
+    private static bool _isLeftEnabled = false;
+    private static bool _isBackwardEnabled = false;
+    private static bool _isRepeatEnabled = true;
+
+    // - Checked in LevelLayout. Used to decide 
+    // whether the player is eligible to move or not - //
+    public static bool isForwardTouched = false;
+    public static bool isBackwardTouched = false;
+    public static bool isRightTouched = false;
+    public static bool isLeftTouched = false;
+    public static bool isRepeatTouched = false;
+
+    private GameObject theLayout;
+    private LevelLayout levelLayout;
+
+    // -------------------------------------------
 
     // - TEXTURES - // ----------------------------
     // - Button texture is set inside unity - //
@@ -37,27 +55,43 @@ public class PlayerControls : TouchManager {
 
     // -------------------------------------------
 
-    // - STATICS - // ------------------------------
-    // - Enable or disable the button controls - //
-    public static bool isForwardEnabled = true;
-    public static bool isRightEnabled = false; 
-    public static bool isLeftEnabled = false;
-    public static bool isBackwardEnabled = false;
-    public static bool isRepeatEnabled = true;
-    
 
-    // - Checked in LevelLayout. Used to decide 
-    // whether the player is eligible to move or not - //
-    public static bool isForwardTouched = false;
-    public static bool isBackwardTouched = false;
-    public static bool isRightTouched = false;
-    public static bool isLeftTouched = false;
-    public static bool isRepeatTouched = false;
-   
-    // -------------------------------------------
     //// ------------------------------------------------------
-    
-    
+
+    // - GETTERS - SETTERS - PROPERTIES - // ------
+    public int GetRepeat()
+    {
+        return _repeat;
+    }
+    public void DecrementRepeat()
+    {
+        _repeat -= 1;
+    }
+    public void ResetRepeat()
+    {
+        _repeat = -1;
+    }
+
+    public bool IsRightEnabled
+    {
+        get { return _isRightEnabled; }
+        set { _isRightEnabled = value; }
+    }
+    public bool IsLeftEnabled
+    {
+        get { return _isLeftEnabled; }
+        set { _isLeftEnabled = value; }
+    }
+    public bool IsBackwardEnabled
+    {
+        get { return _isBackwardEnabled; }
+        set { _isBackwardEnabled = value; }
+    }
+    public bool IsRepeatEnabled
+    {
+        get { return _isRepeatEnabled; }
+        set { _isRepeatEnabled = value; }
+    }
 
 
     //// - METHODS --------------------------------///////------------
@@ -96,16 +130,15 @@ public class PlayerControls : TouchManager {
                 Debug.Log("Forward button touched!");
                 // - Only allow the player to be able to move if the other buttons are not active AND
                 // the next move is within the boundaries of the game world - //
-                if (!isBackwardTouched && !isRightTouched && !isLeftTouched && LevelLayout.currentPositionIndex < 42)                 
+                if (!isBackwardTouched && !isRightTouched && !isLeftTouched && levelLayout.GetCurrentPositionIndex() < 42)                 
                 {
-                    isForwardTouched = true;
-                    
+                    isForwardTouched = true;   
                 }
                 break;
 
             case ButtonTypes.Backward:
                 Debug.Log("Backward button touched!");
-                if (!isForwardTouched && !isRightTouched && !isLeftTouched && LevelLayout.currentPositionIndex > 5)
+                if (!isForwardTouched && !isRightTouched && !isLeftTouched && levelLayout.GetCurrentPositionIndex() > 5)
                 {
                     isBackwardTouched = true;
                 }
@@ -133,11 +166,11 @@ public class PlayerControls : TouchManager {
                 {
                     // If repeat is pressed, then set it to zero and add 1
                     // Repeat is set back to -1 once faster movements are complete
-                    if (repeat == -1)   repeat = 0;
-                    repeat++;
+                    if (_repeat == -1)   _repeat = 0;
+                    _repeat++;
                     // Don't allow the player to repeat more than four times
-                    if (repeat >= 4)    repeat = 4;
-                    Debug.Log(repeat);
+                    if (_repeat >= 4)    _repeat = 4;
+                    Debug.Log(_repeat);
                 }
                 break;
 
@@ -150,23 +183,14 @@ public class PlayerControls : TouchManager {
     }
 
     private void OnFirstTouchEnd() {
-        switch(buttonType)
-        {
-            case ButtonTypes.Forward:
-                Debug.Log("Forward button touch ended!");
-                
-                break;
-
-
-        }
+        
     }
 
     // Changes the repeat button texture to match the amount of repeats the player wishes to use
     public void SetRepeatButtonTexture()
     {
-        switch (repeat)
-        {
-           
+        switch (_repeat)
+        {  
             case 1:
                 repeatButtonTexture.texture = repeatButtonTexture1.texture;
                 break;
@@ -186,33 +210,61 @@ public class PlayerControls : TouchManager {
 
     // - BUTTON ACTIVE CHECK - Checks whether the buttons have been unlocked by the player. 
     // Bools are static and are created within LevelLayout - //
-    private void ButtonActiveCheck()
+    public void ButtonActiveCheck()
     {
-        forwardButtonTexture.gameObject.SetActive(isForwardEnabled);
-        rightButtonTexture.gameObject.SetActive(isRightEnabled);
-        leftButtonTexture.gameObject.SetActive(isLeftEnabled);
-        backwardButtonTexture.gameObject.SetActive(isBackwardEnabled);
-        repeatButtonTexture.gameObject.SetActive(isRepeatEnabled);
+        forwardButtonTexture.gameObject.SetActive(_isForwardEnabled);
+        rightButtonTexture.gameObject.SetActive(_isRightEnabled);
+        leftButtonTexture.gameObject.SetActive(_isLeftEnabled);
+        backwardButtonTexture.gameObject.SetActive(_isBackwardEnabled);
+        repeatButtonTexture.gameObject.SetActive(_isRepeatEnabled);
     }
+
+   
+
+    //public bool IsRightTouched
+    //{
+    //    get { return isRightTouched; }
+    //    set { isRightTouched = value; }
+    //}
+    //public bool IsLeftTouched
+    //{
+    //    get { return isLeftTouched; }
+    //    set { isLeftTouched = value; }
+    //}
+    //public bool IsBackwardTouched
+    //{
+    //    get { return isBackwardTouched; }
+    //    set { isBackwardTouched = value; }
+    //}
+    //public bool IsForwardTouched
+    //{
+    //    get { return isForwardTouched; }
+    //    set { isForwardTouched = value; }
+    //}
+    //public bool IsRepeatTouched
+    //{
+    //    get { return isRepeatTouched; }
+    //    set { isRepeatTouched = value; }
+    //}
 
     //// ------------------------------------------------------
 
     void Start () {
         SetupButtons();
         ButtonActiveCheck();
+        theLayout = GameObject.Find("BackTiles");
+        levelLayout = theLayout.GetComponent<LevelLayout>();
 
-
-        
     }
 
     void Update () {
         // Resets repeat texture to 0
-        if(repeat == 0 || repeat == -1)
+        if(_repeat == 0 || _repeat == -1)
         {
             repeatButtonTexture.texture = repeatButtonTexture0.texture;
         }
         TouchInput(buttonTexture);
-        ButtonActiveCheck();
+        //ButtonActiveCheck();
         SetRepeatButtonTexture();
 
     }

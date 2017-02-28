@@ -7,8 +7,7 @@ using UnityEngine.SceneManagement;
 // Also handles when the text for the chests are enabled on each level - //
 
 public class LevelLayout : MonoBehaviour {
-
-    
+  
     //// - VARIABLES -------------------------- ///// ----------
     // - GAME OBJECTS - //
     public GameObject   playerObject = null;
@@ -17,83 +16,112 @@ public class LevelLayout : MonoBehaviour {
         
     // - GUI TEXTURES - //
     public GUITexture chestTextTexture = null;
-    
+
     // - PLAYER DATA - //
-    public float        moveSpeed;
-    private float       slowSpeed = 0.2f;
-    private float       standardSpeed = 0.4f;
-    private float       repeatSpeed = 1.0f;
-    private float       moveTime = 0;
-    private bool        moveCheck = false;
-    public static int   currentPositionIndex;
+    private const float     _SlowSpeed = 0.2f;
+    private const float     _StandardSpeed = 0.4f;
+    private const float     _RepeatSpeed = 1.0f;
+    private static float    _moveTime = 0;
+    private static bool     _moveCheck = false;
+    private static int      _currentPositionIndex;
     
+    public float            moveSpeed;
+
     // - LEVEL DATA - //
-    public Tile[]       tiles = new Tile[48];       // WARNING : DO NOT CHANGE TO PRIVATE (would have to re-do all the tiles in the editor)
-    public static bool  isChestTextEnabled = false;
-    public bool         isChestFound = false;
-    private static int  levelNumber = 1;
-    
+    private const int       _Forward = 6, _Right = 1;
+    private static Vector3  _vNextForwardPosition;
+    private static Vector3  _vNextBackwardPosition;
+    private static Vector3  _vNextRightPosition;
+    private static Vector3  _vNextLeftPosition;
+    private static bool     _isChestTextEnabled = false;
+    private static int      _levelNumber = 1;
+
+    public Tile[]           tiles = new Tile[48];       // WARNING : DO NOT CHANGE TO PRIVATE (would have to re-do all the tiles in the editor)
+    public bool             isChestFound = false;
+   
+
+    private GameObject theControls;
+    private PlayerControls controls;
+
+    public float rewardTextTimer = 3.2f;
+
     //// ------------------------------------------------------
+
+    // - GETTERS - SETTERS - PROPERTIES - // ------
+    public int GetCurrentPositionIndex()
+    {
+        return _currentPositionIndex;
+    }
+
+    public bool IsChestTextEnabled
+    {
+        get { return _isChestTextEnabled; }
+        set { _isChestTextEnabled = value; }
+    }
 
     //// - METHODS -------------------------///////------------
     // - NEXT POSITIONS - Returns the tile positions
     //  up, down, left, and right of the player - //
-    private Vector3 NextForwardPosition()
+
+    private void CountdownDisableText(GUITexture text)
     {
-        var forwardPosition = tiles[currentPositionIndex + 6].transform.position;
-        return forwardPosition;
+        
+        if (_isChestTextEnabled)
+        {
+            rewardTextTimer -= Time.deltaTime;
+            if(rewardTextTimer < 0)
+            {
+                text.gameObject.SetActive(false);
+                _isChestTextEnabled = false;
+                rewardTextTimer = 3.2f;
+            }
+        }
     }
-    private Vector3 NextRightPosition()
+
+    private Vector3 NextTilePosition(int numberOfTiles)
     {
-        var rightPosition = tiles[currentPositionIndex + 1].transform.position;
-        return rightPosition;
+        var nextPosition = tiles[_currentPositionIndex + numberOfTiles].transform.position;
+        return nextPosition;
     }
-    private Vector3 NextLeftPosition()
-    {
-        var leftPosition = tiles[currentPositionIndex - 1].transform.position;
-        return leftPosition;
-    }
-    private Vector3 NextBackwardPosition()
-    {
-        var backwardPosition = tiles[currentPositionIndex - 6].transform.position;
-        return backwardPosition; 
-    }
+   
+    
 
     // - MOVE CHECK - Provides the movement of the player with a static 
     // speed. Removes the problem of the smoothing when using linear
     // interpolation - //
     private void MoveCheck() {
-        if (!moveCheck)
+        if (!_moveCheck)
         {
-            moveTime = 0.0f;
-            moveCheck = true;
+            _moveTime = 0.0f;
+            _moveCheck = true;
         }
-        moveTime += Time.deltaTime * moveSpeed;
+        _moveTime += Time.deltaTime * moveSpeed;
     }
 
     // - GOAL CHECK - Checks which level the player is currently on and 
     // loads the next level - //
     private void GoalCheck()    {
-        if (tiles[currentPositionIndex].isGoalTile)
+        if (tiles[_currentPositionIndex].isGoalTile)
         {
+            controls.ResetRepeat();
             Debug.Log("You reached the end of the level!");
-            switch (levelNumber)
+            switch (_levelNumber)
             {
                 case 1:
                     SceneManager.LoadScene("LevelTwo");
-                    levelNumber = 2;
+                    _levelNumber = 2;
                     break;
                 case 2:
                     SceneManager.LoadScene("LevelThree");
-                    levelNumber = 3;
+                    _levelNumber = 3;
                     break;
                 case 3:
                     SceneManager.LoadScene("LevelFour");
-                    levelNumber = 4;
+                    _levelNumber = 4;
                     break;
                 case 4:
                     SceneManager.LoadScene("LevelFive");
-                    levelNumber = 5;
+                    _levelNumber = 5;
                     break;
             }
         }
@@ -104,215 +132,146 @@ public class LevelLayout : MonoBehaviour {
     private void ChestCheck()
     {
         Debug.Log("You reached a chest!");
-        switch (levelNumber)
+        switch (_levelNumber)
         {
             case 1:
-                PlayerControls.isRightEnabled = true;
-                Debug.Log(PlayerControls.isRightEnabled);
+                controls.IsRightEnabled = true;
+                Debug.Log(controls.IsRightEnabled);
                 break;
             case 2:
-                PlayerControls.isBackwardEnabled = true;
+                controls.IsBackwardEnabled = true;
                 break;
             case 4:
-                PlayerControls.isLeftEnabled = true;
+                controls.IsLeftEnabled = true;
                 break;
 
         }
     }
 
-   
-
-
-    // - TILE CHECKS - Each function checks the tiles closest to the current tile to find out  
-    // whether the player can move to that tile and if so, make the appropriate movement and update
-    // the player's new current tile - //
-    private void ForwardCheck() {
-        switch (tiles[currentPositionIndex + 6].tileType)
+    // - DIRECTION FUNCTION CHECK - If repeat is active, we need to know which action is being used
+    // in order to be able to use recursion - //
+    private void DirectionFunctionCheck(string animationName, ref Vector3 nextTransPos)
+    {
+        switch (animationName)
         {
+            case "Forward":
+                nextTransPos = NextTilePosition(_Forward);
+                break;
+            case "Down":
+                nextTransPos = NextTilePosition(-_Forward);
+                break;
+            case "Right":
+                nextTransPos = NextTilePosition(_Right);
+                break;
+            case "Left":
+                nextTransPos = NextTilePosition(-_Right);
+                break;
+        }
+    }
+
+    private void NextMoveCheck(ref bool isButtonTouched, int tileAmount, ref Vector3 nextTransformPosition, string animName)
+    {
+        
+        switch (tiles[_currentPositionIndex + tileAmount].tileType)
+        {
+
             // If the next tile is accessible
             case Tile.TypeOfTile.Open:
-                if (PlayerControls.isForwardTouched)
+                if (isButtonTouched)
                 {
-                    // Make sure that if PlayerControls.PlayerControls.repeat is active, the player moves faster
-                    if (PlayerControls.repeat >= 0)        moveSpeed = repeatSpeed;
-                    else                                   moveSpeed = standardSpeed;
+                        
+                    if (controls.GetRepeat() >= 0) moveSpeed = _RepeatSpeed;
+                    else moveSpeed = _StandardSpeed;
 
                     // Setup the movement from one tile to the next
                     MoveCheck();
-                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, NextForwardPosition(), moveTime);
-                    playerAnim.SetBool("Forward", PlayerControls.isForwardTouched);
+                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, nextTransformPosition, _moveTime);
+                    playerAnim.SetBool(animName, isButtonTouched);
 
                     // If player has reached next tile, then set new current position and stop player moving
-                    if (playerObject.transform.position == NextForwardPosition())
+                    if (playerObject.transform.position == nextTransformPosition)
                     {
-                        currentPositionIndex += 6;                                         
+                        _currentPositionIndex += tileAmount;
                         GoalCheck();
-                        PlayerControls.isForwardTouched = false;
-                        moveCheck = false;
-                        playerAnim.SetBool("Forward", false);
+                        isButtonTouched = false;
+                        _moveCheck = false;
+                        playerAnim.SetBool(animName, false);
+                        
+
+                        // Cancel the repeat if the next position is out of bounds  
+                        if (controls.GetRepeat() > 0 && animName == "Forward" && _currentPositionIndex >= 42)        controls.ResetRepeat();
+                        else if (controls.GetRepeat() > 0 && animName == "Down" && _currentPositionIndex <= 5)       controls.ResetRepeat();
 
                         // If the PlayerControls.repeat button has been pressed, keep recalling the method untill PlayerControls.repeat = 0
-                        if (PlayerControls.repeat > 0 && currentPositionIndex <= 43)
+                        if (controls.GetRepeat() > 0)
                         {
-                            PlayerControls.repeat--;
-                            Debug.Log(PlayerControls.repeat);
-                            PlayerControls.isForwardTouched = true;
-                            ForwardCheck();
+                            
+                            controls.DecrementRepeat();
+                            Debug.Log(controls.GetRepeat());
+                            isButtonTouched = true;
+                            // Setup the next tile position for the recursion
+                            DirectionFunctionCheck(animName, ref nextTransformPosition);
+                            NextMoveCheck(ref isButtonTouched, tileAmount, ref nextTransformPosition, animName);
                         }
                         // If PlayerControls.repeat is now zero, make sure the player no longer has speed increase
-                        else    PlayerControls.repeat = -1;
+                        else controls.ResetRepeat();
                     }
                 }
                 break;
 
             // If the next tile is blocked
             case Tile.TypeOfTile.Wall:
-                if (PlayerControls.isForwardTouched)
+                if (isButtonTouched)
                 {
+
                     // If the player's next move is a wall, stop the PlayerControls.repeat speed bonus
-                    if (PlayerControls.repeat > 0)     PlayerControls.repeat = -1;
-                    
-                    Debug.Log("Cannot move forward! Wall ahead!");
+                    if (controls.GetRepeat() > 0)   controls.ResetRepeat();
+
+                    Debug.Log("Cannot move! Wall ahead!");
                     // - Makes sure current position remains the same in this case (Player was originally
                     // automatically moving forward once the tile was later set to open - //
-                    currentPositionIndex -= 6;
+                    _currentPositionIndex -= tileAmount;
                 }
                 break;
 
-            // If the next tile is a slow (i.e. mud)
             case Tile.TypeOfTile.Slow:
-                if (PlayerControls.isForwardTouched)
+                if (isButtonTouched)
                 {
-                    if (PlayerControls.repeat >= 0)     moveSpeed = repeatSpeed * 0.5f;
-                    else                 moveSpeed = slowSpeed;
-                    
+                    if (controls.GetRepeat() >= 0) moveSpeed = _RepeatSpeed * 0.5f;
+                    else moveSpeed = _SlowSpeed;
+
                     MoveCheck();
-                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, NextForwardPosition(), moveTime);
-                    playerAnim.SetBool("Forward", PlayerControls.isForwardTouched);
+                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, nextTransformPosition, _moveTime);
+                    playerAnim.SetBool(animName, isButtonTouched);
 
-                    if (playerObject.transform.position == NextForwardPosition())
+                    if (playerObject.transform.position == nextTransformPosition)
                     {
-                        currentPositionIndex += 6;
-                        PlayerControls.isForwardTouched = false;
-                        moveSpeed = standardSpeed;
-                        moveCheck = false;
-                        playerAnim.SetBool("Forward", false);
+                        _currentPositionIndex += tileAmount;
+                        isButtonTouched = false;
+                        moveSpeed = _StandardSpeed;
+                        _moveCheck = false;
+                        playerAnim.SetBool(animName, false);
 
-                        if (PlayerControls.repeat > 0)
+                        if (controls.GetRepeat() > 0 && animName == "Forward" && _currentPositionIndex >= 42)    controls.ResetRepeat();
+                        else if (controls.GetRepeat() > 0 && animName == "Down" && _currentPositionIndex <= 5)   controls.ResetRepeat();
+
+                        if (controls.GetRepeat() > 0)
                         {
-                            PlayerControls.repeat--;
-                            Debug.Log(PlayerControls.repeat);
-                            PlayerControls.isForwardTouched = true;
-                            ForwardCheck();
+                            controls.DecrementRepeat();
+                            Debug.Log(controls.GetRepeat());
+                            isButtonTouched = true;
+                            // Setup the next tile position for the recursion
+                            DirectionFunctionCheck(animName, ref nextTransformPosition);
+                            NextMoveCheck(ref isButtonTouched, tileAmount, ref nextTransformPosition, animName);
                         }
-                        else    PlayerControls.repeat = -1;
+                        else    controls.ResetRepeat();
                     }
                 }
                 break;
 
             // If next tile is a hole
             case Tile.TypeOfTile.Hole:
-                if (PlayerControls.isForwardTouched)    Debug.Log("Oh dear, you fell down a hole");
-                break;
-
-            // If next tile is the goal
-            case Tile.TypeOfTile.Chest:
-                if (PlayerControls.isForwardTouched)
-                {
-                    if (PlayerControls.repeat > 0)     PlayerControls.repeat = -1;
-
-                    ChestCheck();                   
-                    PlayerControls.isForwardTouched = false;
-                    
-                    // Don't allow text to be shown again after moving towards chest
-                    if (!isChestFound)
-                    {
-                        isChestTextEnabled = true;
-                        isChestFound = true;
-                    }                                    
-                }
-                break;           
-        }
-    }
-    private void RightCheck() {
-       
-        switch(tiles[currentPositionIndex + 1].tileType)
-        {
-            case Tile.TypeOfTile.Open:
-                if(PlayerControls.isRightTouched)
-                {
-                    // WHAT
-                    if (PlayerControls.repeat >= 0)    moveSpeed = repeatSpeed;
-                    else                moveSpeed = standardSpeed;
-
-                    MoveCheck();
-                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, NextRightPosition(), moveTime);
-                    playerAnim.SetBool("Right", PlayerControls.isRightTouched);
-
-                    if (playerObject.transform.position == NextRightPosition())
-                    {
-                        currentPositionIndex += 1;
-                        Debug.Log(currentPositionIndex);                       
-                        GoalCheck();                                        
-                        PlayerControls.isRightTouched = false;
-                        moveCheck = false;
-                        playerAnim.SetBool("Right", false);
-
-                        if (PlayerControls.repeat > 0)
-                        {
-                            PlayerControls.repeat--;
-                            Debug.Log(PlayerControls.repeat);
-                            PlayerControls.isRightTouched = true;
-                            RightCheck();
-                        }
-                        // If PlayerControls.repeat is now zero, make sure the player no longer has speed increase
-                        else PlayerControls.repeat = -1;
-                    }
-                   
-                }
-                break;
-
-            case Tile.TypeOfTile.Wall:
-                if (PlayerControls.isRightTouched)
-                {
-                    if (PlayerControls.repeat > 0)      PlayerControls.repeat = -1;
-                    Debug.Log("Cannot move right! Wall!");
-                    currentPositionIndex -= 1;
-                }
-                break;
-
-            case Tile.TypeOfTile.Slow:
-                if (PlayerControls.isRightTouched)
-                {
-                    moveSpeed = slowSpeed;
-                    MoveCheck();
-                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, NextRightPosition(), moveTime);
-                    playerAnim.SetBool("Right", PlayerControls.isRightTouched);
-                    if (playerObject.transform.position == NextRightPosition())
-                    {
-                        currentPositionIndex += 1;
-                        PlayerControls.isRightTouched = false;
-                        moveSpeed = standardSpeed;
-                        moveCheck = false;
-                        playerAnim.SetBool("RIght", false);
-
-                        if (PlayerControls.repeat > 0)
-                        {
-                            PlayerControls.repeat--;
-                            Debug.Log(PlayerControls.repeat);
-                            PlayerControls.isRightTouched = true;
-                            RightCheck();
-                        }
-                        else PlayerControls.repeat = -1;
-                    }
-
-                   
-                }
-                break;
-
-            // If next tile is a hole
-            case Tile.TypeOfTile.Hole:
-                if (PlayerControls.isRightTouched)
+                if (isButtonTouched)
                 {
                     Debug.Log("Oh dear, you fell down a hole");
                 }
@@ -320,237 +279,32 @@ public class LevelLayout : MonoBehaviour {
 
             // If next tile is the goal
             case Tile.TypeOfTile.Chest:
-                if (PlayerControls.isRightTouched)
+                if (isButtonTouched)
                 {
-                    if (PlayerControls.repeat > 0)     PlayerControls.repeat = -1;
+                    if (controls.GetRepeat() > 0)   controls.ResetRepeat();
+
                     ChestCheck();
-                    PlayerControls.isRightTouched = false;
+                    isButtonTouched = false;
+
                     // Don't allow text to be shown again after moving towards chest
                     if (!isChestFound)
                     {
-                        isChestTextEnabled = true;
+                        _isChestTextEnabled = true;
                         isChestFound = true;
                     }
                 }
-                break;          
+                break;
         }
     }
-    private void LeftCheck() {
-        switch(tiles[currentPositionIndex - 1].tileType)
-        {
-            case Tile.TypeOfTile.Open:
-                if(PlayerControls.isLeftTouched)
-                {
-                    if (PlayerControls.repeat >= 0)    moveSpeed = repeatSpeed;
-                    else                moveSpeed = standardSpeed;
-
-                    MoveCheck();
-                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, NextLeftPosition(), moveTime);
-                    playerAnim.SetBool("Left", PlayerControls.isLeftTouched);
-                    if(playerObject.transform.position == NextLeftPosition())
-                    {
-                        currentPositionIndex -= 1;
-                        Debug.Log(currentPositionIndex);
-                        GoalCheck();
-                        PlayerControls.isLeftTouched = false;
-                        moveCheck = false;
-                        playerAnim.SetBool("Left", false);
-
-                        if (PlayerControls.repeat > 0)
-                        {
-                            PlayerControls.repeat--;
-                            Debug.Log(PlayerControls.repeat);
-                            PlayerControls.isLeftTouched = true;
-                            LeftCheck();
-                        }
-                    }
-                    
-                }
-                break;
-
-            case Tile.TypeOfTile.Wall:
-                if(PlayerControls.isLeftTouched)
-                {
-                    if (PlayerControls.repeat > 0)     PlayerControls.repeat = -1;
-                    Debug.Log("Cannot move left! Wall!");
-                    currentPositionIndex += 1;
-                }
-                break;
-
-            case Tile.TypeOfTile.Slow:
-                if (PlayerControls.isLeftTouched)
-                {
-                    if (PlayerControls.repeat >= 0)    moveSpeed = repeatSpeed;
-                    else                moveSpeed = standardSpeed;
-
-                    moveSpeed = slowSpeed;
-                    MoveCheck();
-                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, NextLeftPosition(), moveTime);
-                    playerAnim.SetBool("Left", PlayerControls.isLeftTouched);
-                    if (playerObject.transform.position == NextLeftPosition())
-                    {
-                        currentPositionIndex -= 1;
-                        PlayerControls.isLeftTouched = false;
-                        moveSpeed = standardSpeed;
-                        moveCheck = false;
-                        playerAnim.SetBool("Left", false);
-
-                        if (PlayerControls.repeat > 0)
-                        {
-                            PlayerControls.repeat--;
-                            Debug.Log(PlayerControls.repeat);
-                            PlayerControls.isLeftTouched = true;
-                            LeftCheck();
-                        }
-                        else    PlayerControls.repeat = -1;
-                    }
-                }
-                break;
-
-            // If next tile is a hole
-            case Tile.TypeOfTile.Hole:
-                if (PlayerControls.isLeftTouched)
-                {
-                    Debug.Log("Oh dear, you fell down a hole");
-                }
-                break;
-
-            // If next tile is the goal
-            case Tile.TypeOfTile.Chest:
-                if (PlayerControls.isLeftTouched)
-                {
-                    if (PlayerControls.repeat >= 0)    PlayerControls.repeat = -1;
-                    ChestCheck();
-                    PlayerControls.isLeftTouched = false;
-                    // Don't allow text to be shown again after moving towards chest
-                    if (!isChestFound)
-                    {
-                        isChestTextEnabled = true;
-                        isChestFound = true;
-                    }
-                }
-                break;     
-        }
-    }
-    private void BackwardCheck() {  
-        switch (tiles[currentPositionIndex - 6].tileType)
-        {
-            // If the next tile is accessible
-            case Tile.TypeOfTile.Open:
-                if (PlayerControls.isBackwardTouched)
-                {
-                    if (PlayerControls.repeat >= 0)     moveSpeed = repeatSpeed;
-                    else                                moveSpeed = standardSpeed;
-
-                    MoveCheck();
-                    playerObject.transform.position = Vector2.Lerp(playerObject.transform.position, NextBackwardPosition(), moveTime);
-                    playerAnim.SetBool("Down", PlayerControls.isBackwardTouched);  
-                      
-                    // If player has reached next tile, then set new current position and stop player moving
-                    if (playerObject.transform.position == NextBackwardPosition())
-                    {
-                        currentPositionIndex -= 6;
-                        Debug.Log(currentPositionIndex);                        
-                        GoalCheck();
-                        PlayerControls.isBackwardTouched = false;
-                        moveCheck = false;
-                        playerAnim.SetBool("Down", false);
-
-                        // - If the PlayerControls.repeat button has been pressed and the next move 
-                        // is inbounds, keep recalling the method untill PlayerControls.repeat = 0 - //
-                        if (PlayerControls.repeat > 0 && currentPositionIndex >= 6)
-                        {
-                            PlayerControls.repeat--;
-                            Debug.Log(PlayerControls.repeat);
-                            PlayerControls.isBackwardTouched = true;
-                            BackwardCheck();
-                        }
-                        else    PlayerControls.repeat = -1;
-                    }
-                }
-                break;
-
-            // If the next tile is blocked
-            case Tile.TypeOfTile.Wall:
-                if (PlayerControls.isBackwardTouched)
-                {
-                    if (PlayerControls.repeat > 0)      PlayerControls.repeat = -1;
-                    Debug.Log("Cannot move backward! Wall behind!");
-                    // - Makes sure current position remains the same in this case (Player was originally 
-                    // automatically moving forward once the tile was later set to open - //
-                    currentPositionIndex += 6;
-                }
-                break;
-
-            // If the next tile is a slow (i.e. mud)
-            case Tile.TypeOfTile.Slow:
-                if (PlayerControls.isBackwardTouched)
-                {
-                    if (PlayerControls.repeat >= 0)     moveSpeed = repeatSpeed * 0.5f;
-                    else                 moveSpeed = slowSpeed;
-                   
-                    MoveCheck();
-                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, NextBackwardPosition(), moveTime);
-                    playerAnim.SetBool("Down", PlayerControls.isBackwardTouched);
-                    if (playerObject.transform.position == NextBackwardPosition())
-                    {
-                        currentPositionIndex -= 6;
-                        PlayerControls.isBackwardTouched = false;
-                        moveSpeed = standardSpeed;
-                        moveCheck = false;
-                        playerAnim.SetBool("Down", false);
-
-                        if (PlayerControls.repeat > 0)
-                        {
-                            PlayerControls.repeat--;
-                            Debug.Log(PlayerControls.repeat);
-                            PlayerControls.isBackwardTouched = true;
-                            BackwardCheck();
-                        }
-                        else    PlayerControls.repeat = -1;
-                    }
-                }
-                break;
-
-            // If next tile is a hole
-            case Tile.TypeOfTile.Hole:
-                if (PlayerControls.isBackwardTouched)
-                {
-                    Debug.Log("Oh dear, you fell down a hole");
-                }
-                break;
-
-            // If next tile is the goal
-            case Tile.TypeOfTile.Chest:
-                if (PlayerControls.isBackwardTouched)
-                {
-                    if (PlayerControls.repeat > 0)     PlayerControls.repeat = -1;
-
-                    ChestCheck();
-                    PlayerControls.isBackwardTouched = false;
-                    // Don't allow text to be shown again after moving towards chest
-                    if (!isChestFound)
-                    {
-                        isChestTextEnabled = true;
-                        isChestFound = true;
-                    }
-                }
-                break;           
-           }       
-    }
-
-
-    
-
 
     // - LEVEL SETUP - Runs each time level starts. Positions depend on what is set within 
     // the editor. Also initiates all tiles in chronological order from left to right - //
     private void LevelSetup() {
         
         var pos = 0;
-        PlayerControls.repeat = -1;
-        moveSpeed = standardSpeed;
-        isChestTextEnabled = false;
+        controls.ResetRepeat();
+        moveSpeed = _StandardSpeed;
+        _isChestTextEnabled = false;
         isChestFound = false;
         foreach(Tile aTile in tiles) {
             aTile.SetPosition(pos);
@@ -560,7 +314,7 @@ public class LevelLayout : MonoBehaviour {
                 playerObject.transform.position = aTile.transform.position;
                 // - Makes sure the players current position tile is the same 
                 // as the start tile each time the level is loaded - //
-                currentPositionIndex = aTile.GetPosition();
+                _currentPositionIndex = aTile.GetPosition();
             }
             if(aTile.isChestTile)
             {
@@ -577,38 +331,49 @@ public class LevelLayout : MonoBehaviour {
 
     // - CHANGE PLAYER POSITION (Not currently in use) - //
     public void ChangePlayerPosition() {
-        playerObject.transform.position = tiles[currentPositionIndex].transform.position;
+        playerObject.transform.position = tiles[_currentPositionIndex].transform.position;
     }
 
     //// ------------------------------------------------------
 
+   
+
+    
+
     // Use this for initialization
     void Start () {
+        
+        theControls = GameObject.Find("Forward");
+        controls = theControls.GetComponent<PlayerControls>();
         LevelSetup();
-       // Run();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        // Make sure we can only make a move if the next position is inbounds     
-        if (currentPositionIndex <= 42)
-        {
-            ForwardCheck();
-        }
-        if (currentPositionIndex >= 6)
-        {
-            BackwardCheck();
-        }
-        RightCheck();
-        LeftCheck();
-        chestTextTexture.gameObject.SetActive(isChestTextEnabled);
-
-
-        //Run();
         
 
+        if (_currentPositionIndex <= 42)
+        {
+            _vNextForwardPosition = NextTilePosition(_Forward);
+            NextMoveCheck(ref PlayerControls.isForwardTouched, _Forward, ref _vNextForwardPosition, "Forward");
+        }
+        
+        if (_currentPositionIndex >= 6)
+        {
+            _vNextBackwardPosition = NextTilePosition(-_Forward);
+            NextMoveCheck(ref PlayerControls.isBackwardTouched, -_Forward, ref _vNextBackwardPosition, "Down");
+        }
 
+        _vNextRightPosition = NextTilePosition(_Right);
+        NextMoveCheck(ref PlayerControls.isRightTouched, _Right, ref _vNextRightPosition, "Right");
 
+        _vNextLeftPosition = NextTilePosition(-_Right);
+        NextMoveCheck(ref PlayerControls.isLeftTouched, -_Right, ref _vNextLeftPosition, "Left");
 
+        CountdownDisableText(chestTextTexture);
+        chestTextTexture.gameObject.SetActive(_isChestTextEnabled);
+
+        controls.ButtonActiveCheck();
     }
+
 }
