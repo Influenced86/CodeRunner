@@ -14,105 +14,133 @@ public class Helper : TouchManager
 
     // - TEXTURES - // ----------------------------
     public GUITexture helperTexture = null;
-    public GUITexture textTexture = null; 
+    public GUITexture textTexture = null;
     // --------------------------------------------
 
     // - VECTORS - // ----------------------------
-    private Vector3 vInitialPosition;
-    private Vector3 vYMax;
-    private Vector3 vYMin;
+    private Vector3 _vInitialPosition;
+    private Vector3 _vYMax;
+    private Vector3 _vYMin;
     // --------------------------------------------
 
     // - GAMEOBJECTS - // -------------------------
-    public GameObject helperButtonObject = null;    
+    public GameObject helperButtonObject = null;
     // --------------------------------------------
 
     // - HELPER DATA - // -------------------------
-    private bool    isStartMove;
-    private float   floatSpeed;
+    private static float    _floatSpeed;
+    private bool            _isStartMove;  
     // --------------------------------------------
 
     //// - METHODS -------------------------///////------------
+
     // - TOUCH MESSAGES - // - Implements the messages received from 
     // TouchManager. Enables the associated text popups for helper 
     // buttons - //
-    private void OnFirstTouchBegan() { 
+    private void OnFirstTouchBegan()
+    { 
         switch(helperType)
         {
             case HelperType.helperForward:
-                HelperText.isTextEnabled = true;
-                Debug.Log("YOU TOUCHED THE FORWARD HELPER");
                 textTexture.gameObject.SetActive(true);
-                helperTexture.gameObject.SetActive(false);
-                Debug.Log(HelperText.isTextEnabled);
+                //TextCheck(textTexture, ref isTextOn[0]);
+                //Debug.Log("YOU TOUCHED THE FORWARD HELPER");
                 break;
 
             case HelperType.helperChest:
-                HelperText.isTextEnabled = true;
-                Debug.Log("YOU TOUCHED THE CHEST HELPER");
                 textTexture.gameObject.SetActive(true);
-                helperTexture.gameObject.SetActive(false);
+                Debug.Log("YOU TOUCHED THE CHEST HELPER");
                 break;
 
             case HelperType.helperGoal:
-                HelperText.isTextEnabled = true;
-                Debug.Log("YOU TOUCHED THE GOAL HELPER");
                 textTexture.gameObject.SetActive(true);
-                helperTexture.gameObject.SetActive(false);
+                Debug.Log("YOU TOUCHED THE GOAL HELPER");
                 break;
 
             case HelperType.helperMud:
-                HelperText.isTextEnabled = true;
-                Debug.Log("YOU TOUCHED THE MUD HELPER");
                 textTexture.gameObject.SetActive(true);
-                helperTexture.gameObject.SetActive(false);
+                Debug.Log("YOU TOUCHED THE MUD HELPER"); 
                 break;
-        }    
-    }
+        }
 
+       
+    }
+    private void OnFirstTouchMoved()
+    {
+        OnFirstTouchEnd();
+    }
+   
     private void OnFirstTouchStay()
     {
 
     }
     private void OnFirstTouchEnd()
     {
-        
+        switch (helperType)
+        {
+            case HelperType.helperForward:
+                textTexture.gameObject.SetActive(false);
+                
+                break;
+
+            case HelperType.helperChest:
+                textTexture.gameObject.SetActive(false);
+                Debug.Log("YOU TOUCHED THE CHEST HELPER");
+                break;
+
+            case HelperType.helperGoal:
+                textTexture.gameObject.SetActive(false);
+                Debug.Log("YOU TOUCHED THE GOAL HELPER");
+
+                break;
+
+            case HelperType.helperMud:
+                textTexture.gameObject.SetActive(false);
+                Debug.Log("YOU TOUCHED THE MUD HELPER");
+
+                break;
+        }
     }
 
     // - FLOAT - Sets up the movement animation - //
-    private void Float() {
-        if (isStartMove)
+    private void Float()
+    {
+        if (_isStartMove)
         {
             // Move the button upwards until it reaches yMax
-            helperButtonObject.transform.position = Vector2.Lerp(helperButtonObject.transform.position, vYMax, floatSpeed * Time.deltaTime);
-            if (helperButtonObject.transform.position == vYMax)
+            helperButtonObject.transform.position = Vector2.Lerp(helperButtonObject.transform.position, _vYMax, _floatSpeed * Time.deltaTime);
+            if (helperButtonObject.transform.position == _vYMax)
             {
-                isStartMove = false;
+                _isStartMove = false;
             }   
         }
         else
         {
             // Once the button has reached yMax, move it downward untill it reaches yMin
-            helperButtonObject.transform.position = Vector2.Lerp(helperButtonObject.transform.position, vYMin, floatSpeed * Time.deltaTime);
-            if (helperButtonObject.transform.position == vYMin)
+            helperButtonObject.transform.position = Vector2.Lerp(helperButtonObject.transform.position, _vYMin, _floatSpeed * Time.deltaTime);
+            if (helperButtonObject.transform.position == _vYMin)
             {
-                isStartMove = true;
+                _isStartMove = true;
             }  
         }         
     }
 
     // Use this for initialization
-    void Start () {
-        floatSpeed = 10.0f;
-        isStartMove = true;
-        vInitialPosition = helperButtonObject.transform.position;
-        vYMax = new Vector2(vInitialPosition.x, vInitialPosition.y + 0.022f);
-        vYMin = new Vector2(vInitialPosition.x, vInitialPosition.y + 0.011f);
+    void Start ()
+    {
+        _floatSpeed = 10.0f;
+        _isStartMove = true;
+        _vInitialPosition = helperButtonObject.transform.position;
+        _vYMax = new Vector2(_vInitialPosition.x, _vInitialPosition.y + 0.022f);
+        _vYMin = new Vector2(_vInitialPosition.x, _vInitialPosition.y + 0.011f);
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         Float();
-        TouchInput(helperTexture);	    
+        TouchInput(helperTexture);
+        
+          
 	}
 }

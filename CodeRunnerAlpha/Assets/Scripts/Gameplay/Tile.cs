@@ -9,7 +9,7 @@ public class Tile : MonoBehaviour {
 
     //// - VARIABLES --------------- //// ----
     // - TILE DATA - //
-    public int  positionIndex;
+    private int  _positionIndex;
     public bool isChestTile;
     public bool isStartTile;
     public bool isGoalTile;
@@ -21,7 +21,7 @@ public class Tile : MonoBehaviour {
 
     // - DEFAULT CONSTRUCTOR - //
     public Tile() {
-        positionIndex = 0;
+        _positionIndex = 0;
         isStartTile = false;
         isChestTile = false;
         isGoalTile = false;
@@ -29,7 +29,7 @@ public class Tile : MonoBehaviour {
     }
     // - SETTERS - //
     public void SetPosition(int position) {
-        positionIndex = position;
+        _positionIndex = position;
     }
     public void SetGoal(bool chest) {
         isChestTile = chest;
@@ -40,7 +40,7 @@ public class Tile : MonoBehaviour {
 
     // - GETTERS - //
     public int GetPosition() {
-        return positionIndex;
+        return _positionIndex;
     }
 
   
