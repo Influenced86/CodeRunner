@@ -82,8 +82,6 @@ public class LevelLayout : MonoBehaviour {
         var nextPosition = tiles[_currentPositionIndex + numberOfTiles].transform.position;
         return nextPosition;
     }
-   
-    
 
     // - MOVE CHECK - Provides the movement of the player with a static 
     // speed. Removes the problem of the smoothing when using linear
@@ -169,11 +167,9 @@ public class LevelLayout : MonoBehaviour {
     }
 
     private void NextMoveCheck(ref bool isButtonTouched, int tileAmount, ref Vector3 nextTransformPosition, string animName)
-    {
-        
+    {      
         switch (tiles[_currentPositionIndex + tileAmount].tileType)
         {
-
             // If the next tile is accessible
             case Tile.TypeOfTile.Open:
                 if (isButtonTouched)

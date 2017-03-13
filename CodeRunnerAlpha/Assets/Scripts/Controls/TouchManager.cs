@@ -7,8 +7,7 @@ using System.Collections;
 
 public class TouchManager : MonoBehaviour {
 
-   
-
+  
     // - Gets the type of input from the user and sends an appropriate 
     // message to which PlayerControls takes care of
     public void TouchInput(GUITexture texture) {
