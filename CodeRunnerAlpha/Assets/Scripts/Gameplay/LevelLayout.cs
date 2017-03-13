@@ -64,8 +64,7 @@ public class LevelLayout : MonoBehaviour {
     //  up, down, left, and right of the player - //
 
     private void CountdownDisableText(GUITexture text)
-    {
-        
+    { 
         if (_isChestTextEnabled)
         {
             rewardTextTimer -= Time.deltaTime;
