@@ -151,8 +151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6ba78d03eb89249b891aeb1af163e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  helperText: 2
-  textHelperTexture: {fileID: 18671515}
 --- !u!1 &130356178
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,6 +262,7 @@ MonoBehaviour:
   backwardButtonTexture: {fileID: 306913921}
   rightButtonTexture: {fileID: 388387708}
   leftButtonTexture: {fileID: 1446333276}
+  compileButtonTexture: {fileID: 138457059}
   repeatButtonTexture: {fileID: 138457059}
   repeatButtonTexture0: {fileID: 1934179810}
   repeatButtonTexture1: {fileID: 425321736}
@@ -816,6 +815,7 @@ MonoBehaviour:
   backwardButtonTexture: {fileID: 306913921}
   rightButtonTexture: {fileID: 388387708}
   leftButtonTexture: {fileID: 1446333276}
+  compileButtonTexture: {fileID: 1646390565}
   repeatButtonTexture: {fileID: 138457059}
   repeatButtonTexture0: {fileID: 1934179810}
   repeatButtonTexture1: {fileID: 425321736}
@@ -1057,8 +1057,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6ba78d03eb89249b891aeb1af163e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  helperText: 3
-  textHelperTexture: {fileID: 343032676}
 --- !u!131 &343032676
 GUITexture:
   m_ObjectHideFlags: 0
@@ -1346,6 +1344,7 @@ MonoBehaviour:
   backwardButtonTexture: {fileID: 306913921}
   rightButtonTexture: {fileID: 388387708}
   leftButtonTexture: {fileID: 1446333276}
+  compileButtonTexture: {fileID: 1646390565}
   repeatButtonTexture: {fileID: 138457059}
   repeatButtonTexture0: {fileID: 1934179810}
   repeatButtonTexture1: {fileID: 425321736}
@@ -4772,6 +4771,7 @@ MonoBehaviour:
   backwardButtonTexture: {fileID: 306913921}
   rightButtonTexture: {fileID: 388387708}
   leftButtonTexture: {fileID: 1446333276}
+  compileButtonTexture: {fileID: 1646390565}
   repeatButtonTexture: {fileID: 138457059}
   repeatButtonTexture0: {fileID: 1934179810}
   repeatButtonTexture1: {fileID: 425321736}
@@ -5960,7 +5960,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475e51f68aff3524986c31981e3b1ce2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1438543036}
 --- !u!61 &1438543038
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6151,6 +6150,7 @@ MonoBehaviour:
   backwardButtonTexture: {fileID: 306913921}
   rightButtonTexture: {fileID: 388387708}
   leftButtonTexture: {fileID: 1446333276}
+  compileButtonTexture: {fileID: 1646390565}
   repeatButtonTexture: {fileID: 138457059}
   repeatButtonTexture0: {fileID: 0}
   repeatButtonTexture1: {fileID: 0}
@@ -6460,8 +6460,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6ba78d03eb89249b891aeb1af163e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  helperText: 1
-  textHelperTexture: {fileID: 1512328913}
 --- !u!1 &1514749763
 GameObject:
   m_ObjectHideFlags: 0
@@ -6991,6 +6989,7 @@ Transform:
   - {fileID: 1412312119}
   - {fileID: 425321735}
   - {fileID: 2065985164}
+  - {fileID: 1646390563}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7074,6 +7073,79 @@ SpriteRenderer:
   m_Color: {r: 0.88235295, g: 0.88235295, b: 0.88235295, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!1 &1646390562
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1646390563}
+  - component: {fileID: 1646390565}
+  - component: {fileID: 1646390564}
+  m_Layer: 0
+  m_Name: CompileTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1646390563
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1646390562}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.12, y: -0.9, z: -2}
+  m_LocalScale: {x: 0.22, y: 0.08, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1616237316}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1646390564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1646390562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b3847c476d7a024393ac83d4e8f5391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonType: 5
+  buttonTexture: {fileID: 1646390565}
+  forwardButtonTexture: {fileID: 0}
+  backwardButtonTexture: {fileID: 0}
+  rightButtonTexture: {fileID: 0}
+  leftButtonTexture: {fileID: 0}
+  compileButtonTexture: {fileID: 1646390565}
+  repeatButtonTexture: {fileID: 0}
+  repeatButtonTexture0: {fileID: 0}
+  repeatButtonTexture1: {fileID: 0}
+  repeatButtonTexture2: {fileID: 0}
+  repeatButtonTexture3: {fileID: 0}
+  repeatButtonTexture4: {fileID: 0}
+--- !u!131 &1646390565
+GUITexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1646390562}
+  m_Enabled: 1
+  m_Texture: {fileID: 2800000, guid: 8b5674054c62a324086f89613fd03b86, type: 3}
+  m_Color: {r: 0.6691177, g: 0.059039813, b: 0.059039813, a: 1}
+  m_PixelInset:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  m_LeftBorder: 0
+  m_RightBorder: 0
+  m_TopBorder: 0
+  m_BottomBorder: 0
 --- !u!1 &1661619247
 GameObject:
   m_ObjectHideFlags: 0
@@ -7218,6 +7290,7 @@ MonoBehaviour:
   - {fileID: 1132152035}
   isChestFound: 0
   rewardTextTimer: 3.2
+  moveList: []
 --- !u!1 &1664663833
 GameObject:
   m_ObjectHideFlags: 0
@@ -8686,8 +8759,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6ba78d03eb89249b891aeb1af163e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  helperText: 0
-  textHelperTexture: {fileID: 2083311043}
 --- !u!1 &2108229601
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 // - Provides all of the core gameplay mechanisms. Decides what type of tiles
@@ -39,11 +39,15 @@ public class LevelLayout : MonoBehaviour {
     public Tile[]           tiles = new Tile[48];       // WARNING : DO NOT CHANGE TO PRIVATE (would have to re-do all the tiles in the editor)
     public bool             isChestFound = false;
    
-
     private GameObject theControls;
     private PlayerControls controls;
 
     public float rewardTextTimer = 3.2f;
+
+    private List<Transform> moveList = new List<Transform>();
+    private Transform lastPosition = null;
+    public int compileMoveNumber = 0;
+    private static int count = 0;
 
     //// ------------------------------------------------------
 
@@ -174,43 +178,74 @@ public class LevelLayout : MonoBehaviour {
             case Tile.TypeOfTile.Open:
                 if (isButtonTouched)
                 {
-                        
-                    if (controls.GetRepeat() >= 0) moveSpeed = _RepeatSpeed;
-                    else moveSpeed = _StandardSpeed;
-
-                    // Setup the movement from one tile to the next
-                    MoveCheck();
-                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, nextTransformPosition, _moveTime);
-                    playerAnim.SetBool(animName, isButtonTouched);
-
-                    // If player has reached next tile, then set new current position and stop player moving
-                    if (playerObject.transform.position == nextTransformPosition)
+                    // Only run this code is compile button has been touched before any movement
+                    if(PlayerControls.isCompileTouched)
                     {
-                        _currentPositionIndex += tileAmount;
-                        GoalCheck();
-                        isButtonTouched = false;
-                        _moveCheck = false;
-                        playerAnim.SetBool(animName, false);
                         
-
-                        // Cancel the repeat if the next position is out of bounds  
-                        if (controls.GetRepeat() > 0 && animName == "Forward" && _currentPositionIndex >= 42)        controls.ResetRepeat();
-                        else if (controls.GetRepeat() > 0 && animName == "Down" && _currentPositionIndex <= 5)       controls.ResetRepeat();
-
-                        // If the PlayerControls.repeat button has been pressed, keep recalling the method untill PlayerControls.repeat = 0
-                        if (controls.GetRepeat() > 0)
+                        lastPosition = playerObject.transform;
+                        moveList.Add(lastPosition);
+                        compileMoveNumber = moveList.Count;
+                        Debug.Log(compileMoveNumber);
+                        // TODO: Need to make it so that the list of positions are moved upon once compile is touched a second time
+                        if (PlayerControls.compileCount == 2)
                         {
-                            
-                            controls.DecrementRepeat();
-                            Debug.Log(controls.GetRepeat());
-                            isButtonTouched = true;
-                            // Setup the next tile position for the recursion
-                            DirectionFunctionCheck(animName, ref nextTransformPosition);
-                            NextMoveCheck(ref isButtonTouched, tileAmount, ref nextTransformPosition, animName);
+                            while (count < moveList.Count)
+                            {
+                                MoveCheck();
+                                playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, moveList[count].position, _moveTime);
+                                if (playerObject.transform.position == moveList[count].position)
+                                {
+
+                                    count += 1;
+                                }
+                            }
                         }
-                        // If PlayerControls.repeat is now zero, make sure the player no longer has speed increase
-                        else controls.ResetRepeat();
+
+                        isButtonTouched = false;
+                        
+                        
                     }
+                    // Only run is compile is not true
+                    else
+                    {
+                        if (controls.GetRepeat() >= 0) moveSpeed = _RepeatSpeed;
+                        else moveSpeed = _StandardSpeed;
+
+                        // Setup the movement from one tile to the next
+                        MoveCheck();
+                        playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, nextTransformPosition, _moveTime);
+                        playerAnim.SetBool(animName, isButtonTouched);
+
+                        // If player has reached next tile, then set new current position and stop player moving
+                        if (playerObject.transform.position == nextTransformPosition)
+                        {
+                            _currentPositionIndex += tileAmount;
+                            GoalCheck();
+                            isButtonTouched = false;
+                            _moveCheck = false;
+                            playerAnim.SetBool(animName, false);
+
+
+                            // Cancel the repeat if the next position is out of bounds  
+                            if (controls.GetRepeat() > 0 && animName == "Forward" && _currentPositionIndex >= 42) controls.ResetRepeat();
+                            else if (controls.GetRepeat() > 0 && animName == "Down" && _currentPositionIndex <= 5) controls.ResetRepeat();
+
+                            // If the PlayerControls.repeat button has been pressed, keep recalling the method untill PlayerControls.repeat = 0
+                            if (controls.GetRepeat() > 0)
+                            {
+
+                                controls.DecrementRepeat();
+                                Debug.Log(controls.GetRepeat());
+                                isButtonTouched = true;
+                                // Setup the next tile position for the recursion
+                                DirectionFunctionCheck(animName, ref nextTransformPosition);
+                                NextMoveCheck(ref isButtonTouched, tileAmount, ref nextTransformPosition, animName);
+                            }
+                            // If PlayerControls.repeat is now zero, make sure the player no longer has speed increase
+                            else controls.ResetRepeat();
+                        }
+                    }
+                    
                 }
                 break;
 
@@ -341,10 +376,12 @@ public class LevelLayout : MonoBehaviour {
         theControls = GameObject.Find("Forward");
         controls = theControls.GetComponent<PlayerControls>();
         LevelSetup();
+        lastPosition = playerObject.transform;
     }
 	
 	// Update is called once per frame
 	void Update () {
+        
         
 
         if (_currentPositionIndex <= 42)
@@ -364,6 +401,8 @@ public class LevelLayout : MonoBehaviour {
 
         _vNextLeftPosition = NextTilePosition(-_Right);
         NextMoveCheck(ref PlayerControls.isLeftTouched, -_Right, ref _vNextLeftPosition, "Left");
+
+        
 
         CountdownDisableText(chestTextTexture);
         chestTextTexture.gameObject.SetActive(_isChestTextEnabled);

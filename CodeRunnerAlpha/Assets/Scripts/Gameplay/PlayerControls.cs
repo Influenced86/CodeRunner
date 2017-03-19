@@ -14,7 +14,7 @@ public class PlayerControls : TouchManager {
 
     //// - VARIABLES -------------------------- ///// ----------
     // - ENUMS - // -------------------------------
-    public enum ButtonTypes { Forward, Backward, Left, Right, Repeat };
+    public enum ButtonTypes { Forward, Backward, Left, Right, Repeat, Compile };
     public ButtonTypes buttonType;
     // --------------------------------------------
 
@@ -24,6 +24,7 @@ public class PlayerControls : TouchManager {
     private static bool _isLeftEnabled = false;
     private static bool _isBackwardEnabled = false;
     private static bool _isRepeatEnabled = true;
+    private static bool _isCompileEnabled = true;
 
     // - Checked in LevelLayout. Used to decide 
     // whether the player is eligible to move or not - //
@@ -32,6 +33,9 @@ public class PlayerControls : TouchManager {
     public static bool isRightTouched = false;
     public static bool isLeftTouched = false;
     public static bool isRepeatTouched = false;
+    public static bool isCompileTouched = false;
+
+    public static int compileCount = 0;
 
     private GameObject theLayout;
     private LevelLayout levelLayout;
@@ -45,6 +49,7 @@ public class PlayerControls : TouchManager {
     public GUITexture backwardButtonTexture = null;
     public GUITexture rightButtonTexture = null;
     public GUITexture leftButtonTexture = null;
+    public GUITexture compileButtonTexture = null;
 
     public GUITexture repeatButtonTexture = null;
     public GUITexture repeatButtonTexture0 = null;
@@ -116,7 +121,10 @@ public class PlayerControls : TouchManager {
             case ButtonTypes.Repeat:
                 repeatButtonTexture = this.GetComponent<GUITexture>();
                 break;
-            
+            case ButtonTypes.Compile:
+                compileButtonTexture = this.GetComponent<GUITexture>();
+                break;
+
         }
     }
 
@@ -169,10 +177,31 @@ public class PlayerControls : TouchManager {
                     if (_repeat == -1)   _repeat = 0;
                     _repeat++;
                     // Don't allow the player to repeat more than four times
-                    if (_repeat >= 4)    _repeat = 4;
+                    if (_repeat > 4)     _repeat = 0;
                     Debug.Log(_repeat);
                 }
                 break;
+            case ButtonTypes.Compile:
+                Debug.Log("Compile button touched!");
+
+                //if (!isForwardTouched && !isBackwardTouched && !isRightTouched && !isLeftTouched && !isRepeatTouched)
+                //{
+                if (!isCompileTouched)
+                {
+                    compileCount = 1;
+                    isCompileTouched = true;
+                }
+                else
+                {
+                    compileCount = 2;
+                    //isCompileTouched = false;
+
+                }
+                    Debug.Log(isCompileTouched);
+                //}
+
+
+                    break;
 
             
         }
@@ -217,6 +246,7 @@ public class PlayerControls : TouchManager {
         leftButtonTexture.gameObject.SetActive(_isLeftEnabled);
         backwardButtonTexture.gameObject.SetActive(_isBackwardEnabled);
         repeatButtonTexture.gameObject.SetActive(_isRepeatEnabled);
+        compileButtonTexture.gameObject.SetActive(_isCompileEnabled);
     }
 
    
