@@ -10,7 +10,10 @@ public class LevelLayout : MonoBehaviour {
   
     //// - VARIABLES -------------------------- ///// ----------
     // - GAME OBJECTS - //
-    public GameObject   playerObject = null;
+    private GameObject   thePlayer;
+    private Player       aPlayer;
+
+
     public GameObject   chestObject = null;
     public Animator     playerAnim;
         
@@ -180,11 +183,11 @@ public class LevelLayout : MonoBehaviour {
 
                     // Setup the movement from one tile to the next
                     MoveCheck();
-                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, nextTransformPosition, _moveTime);
+                    thePlayer.transform.position = Vector3.Lerp(thePlayer.transform.position, nextTransformPosition, _moveTime);
                     playerAnim.SetBool(animName, isButtonTouched);
 
                     // If player has reached next tile, then set new current position and stop player moving
-                    if (playerObject.transform.position == nextTransformPosition)
+                    if (thePlayer.transform.position == nextTransformPosition)
                     {
                         _currentPositionIndex += tileAmount;
                         GoalCheck();
@@ -236,10 +239,10 @@ public class LevelLayout : MonoBehaviour {
                     else moveSpeed = _SlowSpeed;
 
                     MoveCheck();
-                    playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, nextTransformPosition, _moveTime);
+                    thePlayer.transform.position = Vector3.Lerp(thePlayer.transform.position, nextTransformPosition, _moveTime);
                     playerAnim.SetBool(animName, isButtonTouched);
 
-                    if (playerObject.transform.position == nextTransformPosition)
+                    if (thePlayer.transform.position == nextTransformPosition)
                     {
                         _currentPositionIndex += tileAmount;
                         isButtonTouched = false;
@@ -294,24 +297,28 @@ public class LevelLayout : MonoBehaviour {
 
     // - LEVEL SETUP - Runs each time level starts. Positions depend on what is set within 
     // the editor. Also initiates all tiles in chronological order from left to right - //
+    // WHY DOES THIS NOT RUN HERE, BUT SIMILAR METHOD WORKS IN PLAYER???????????????????????????????????????????????????????????????????????????????????????????????????
+    // ??????????????????????????????????????????????????????
     private void LevelSetup() {
         
         var pos = 0;
-        controls.ResetRepeat();
-        moveSpeed = _StandardSpeed;
-        _isChestTextEnabled = false;
-        isChestFound = false;
+        //controls.ResetRepeat();
+        //moveSpeed = _StandardSpeed;
+        //_isChestTextEnabled = false;
+        //isChestFound = false;
         foreach(Tile aTile in tiles) {
             aTile.SetPosition(pos);
-        
-            if(aTile.isStartTile)
+
+            if (aTile.isStartTile)
             {
-                playerObject.transform.position = aTile.transform.position;
-                // - Makes sure the players current position tile is the same 
-                // as the start tile each time the level is loaded - //
-                _currentPositionIndex = aTile.GetPosition();
+                aPlayer.CurrentGridPosition = aTile.GetPosition();
+                aPlayer.CurrentCompilePosition = aTile.GetPosition();
+                aPlayer.transform.position = aTile.transform.position;
+                Debug.Log(aPlayer.CurrentGridPosition);
+            
+                
             }
-            if(aTile.isChestTile)
+            if (aTile.isChestTile)
             {
                 // Loads chest on goal tile (for now)
                 chestObject.transform.position = aTile.transform.position;
@@ -322,11 +329,12 @@ public class LevelLayout : MonoBehaviour {
             }
             pos++;
         }
+
     }
 
     // - CHANGE PLAYER POSITION (Not currently in use) - //
     public void ChangePlayerPosition() {
-        playerObject.transform.position = tiles[_currentPositionIndex].transform.position;
+        thePlayer.transform.position = tiles[_currentPositionIndex].transform.position;
     }
 
     //// ------------------------------------------------------
@@ -337,9 +345,10 @@ public class LevelLayout : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        
-        theControls = GameObject.Find("Forward");
-        controls = theControls.GetComponent<PlayerControls>();
+        thePlayer = GameObject.Find("Player");
+        aPlayer = thePlayer.GetComponent<Player>();
+        //theControls = GameObject.Find("Forward");
+        //controls = theControls.GetComponent<PlayerControls>();
         LevelSetup();
     }
 	

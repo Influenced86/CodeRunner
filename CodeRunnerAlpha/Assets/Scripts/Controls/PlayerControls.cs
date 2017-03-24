@@ -40,7 +40,7 @@ public class PlayerControls : TouchManager {
 
     // - TEXTURES - // ----------------------------
     // - Button texture is set inside unity - //
-    public GUITexture buttonTexture = null;         // Texture for this specific button
+    //public GUITexture buttonTexture = null;         // Texture for this specific button
     public GUITexture forwardButtonTexture = null;
     public GUITexture backwardButtonTexture = null;
     public GUITexture rightButtonTexture = null;
@@ -263,9 +263,10 @@ public class PlayerControls : TouchManager {
         {
             repeatButtonTexture.texture = repeatButtonTexture0.texture;
         }
-        TouchInput(buttonTexture);
+        //TouchInput(buttonTexture);
         //ButtonActiveCheck();
         SetRepeatButtonTexture();
 
     }
 }
+
