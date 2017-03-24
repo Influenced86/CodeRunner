@@ -23,7 +23,7 @@ public class PlayerControls : TouchManager {
     private static bool _isRightEnabled = false;
     private static bool _isLeftEnabled = false;
     private static bool _isBackwardEnabled = false;
-    private static bool _isRepeatEnabled = true;
+    private static bool _isRepeatEnabled = false;
 
     // - Checked in LevelLayout. Used to decide 
     // whether the player is eligible to move or not - //

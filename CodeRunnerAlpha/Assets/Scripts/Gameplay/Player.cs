@@ -10,12 +10,27 @@ public class Player : MonoBehaviour {
     // The level
     private GameObject _level;
     private LevelLayout _levelLayout;
+    
 
-    public List<Vector2> moveList = new List<Vector2>();
+    public List<Transform> moveList = new List<Transform>();
 
+    
+    private const float _SlowSpeed = 0.2f;
+    private const float _StandardSpeed = 0.4f;
+    private const float _RepeatSpeed = 1.0f;
+    
     private static int _currentGridPosition;
     private static int _currentcompilePosition;
 
+    //public float MoveTime
+    //{
+    //    get { return _moveTime; }
+    //    set { }
+    //}
+    //public void SetMoveCheck(bool val)
+    //{
+    //    _moveCheck = val;
+    //}
     public int CurrentGridPosition
     {
         get { return _currentGridPosition; }
@@ -27,11 +42,16 @@ public class Player : MonoBehaviour {
         set { _currentcompilePosition = value; }
     }
 
-    // 
+    // - MOVE CHECK - Provides the movement of the player with a static 
+    // speed. Removes the problem of the smoothing when using linear
+    // interpolation - //
+    
+
+    // Called each time a direction is pressed within the corresponding direction command classes
     public void AddNewPosition(int tileAmount)
     {
         _currentcompilePosition += tileAmount;
-        moveList.Add(_levelLayout.tiles[_currentcompilePosition].transform.position);
+        moveList.Add(_levelLayout.tiles[_currentcompilePosition].transform);
         Debug.Log("Move count total: " + moveList.Count);
         Debug.Log("Current compile position: " + _currentcompilePosition);
     }
@@ -48,10 +68,7 @@ public class Player : MonoBehaviour {
             Debug.Log("Current compile position: " + _currentcompilePosition);
         }
     }
-    public void Compile()
-    {
-
-    }
+   
     
 
     private void PlayerSetup()

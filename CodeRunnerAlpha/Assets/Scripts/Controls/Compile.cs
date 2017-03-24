@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CompileCommand : TouchManager
+public class Compile : TouchManager
 {
     private GameObject playerObject;
     private Player player;
@@ -23,23 +23,20 @@ public class CompileCommand : TouchManager
         _moveTime += Time.deltaTime * moveSpeed;
     }
 
-    public void Execute(Player aPlayer)
-    {
-        Compile();
-    }
-    public void Compile()
+    public void CompileStart()
     {
         _compile = true;
     }
-
+        
     private void OnFirstTouchBegan()
     {
         Debug.Log("Compile Touched!");
-        _compile = true; 
+        CompileStart();
 
     }
     private void OnFirstTouchStay() { }
     private void OnFirstTouchEnd() { }
+   
     // Use this for initialization
     void Start () {
         playerObject = GameObject.Find("Player");
@@ -49,7 +46,6 @@ public class CompileCommand : TouchManager
 	// Update is called once per frame
 	void Update () {
         
-        Debug.Log("Compile = " + _compile);
         if (_compile)
         {      
             MoveCheck();
