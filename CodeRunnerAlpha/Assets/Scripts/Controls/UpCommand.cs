@@ -7,11 +7,15 @@ public class UpCommand : TouchManager, ICommand
     private GameObject playerObject;
     private Player player;
 
+    
+
     private const int _Up = 6;
 
     public void Execute(Player aPlayer)
     {
+       
         aPlayer.AddNewPosition(_Up);
+        
     }
 
     private void OnFirstTouchBegan()
@@ -27,6 +31,8 @@ public class UpCommand : TouchManager, ICommand
     void Start () {
         playerObject = GameObject.Find("Player");
         player = playerObject.GetComponent<Player>();
+
+        
     }
 	
 	// Update is called once per frame

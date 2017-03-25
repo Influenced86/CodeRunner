@@ -20,7 +20,7 @@ public class PlayerControls : TouchManager {
 
     // - Enable or disable the button controls - //
     private static bool _isForwardEnabled = true;
-    private static bool _isRightEnabled = false;
+    private static bool _isRightEnabled = true;
     private static bool _isLeftEnabled = false;
     private static bool _isBackwardEnabled = false;
     private static bool _isRepeatEnabled = false;

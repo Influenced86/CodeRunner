@@ -16,7 +16,8 @@ public class RightCommand : TouchManager, ICommand
 
     private void OnFirstTouchBegan()
     {
-        //Execute(player);
+        Debug.Log("Right touched");
+        Execute(player);
     }
     private void OnFirstTouchStay() { }
     private void OnFirstTouchEnd() { }
@@ -28,6 +29,6 @@ public class RightCommand : TouchManager, ICommand
 	
 	// Update is called once per frame
 	void Update () {
-		
+        TouchInput(buttonTexture);
 	}
 }

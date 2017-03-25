@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct CompilePair
+{
+    public int cpIndex;
+    public Transform cpTransform;
+}
+
 public class Player : MonoBehaviour {
 
     // The player
@@ -10,11 +16,13 @@ public class Player : MonoBehaviour {
     // The level
     private GameObject _level;
     private LevelLayout _levelLayout;
-    
 
-    public List<Transform> moveList = new List<Transform>();
+    private GameObject compileObject;
+    private Compile compile;
 
-    
+    // Used to store each compile movement, grid index value and tile transform
+    public List<CompilePair> moveList = new List<CompilePair>();
+
     private const float _SlowSpeed = 0.2f;
     private const float _StandardSpeed = 0.4f;
     private const float _RepeatSpeed = 1.0f;
@@ -50,20 +58,28 @@ public class Player : MonoBehaviour {
     // Called each time a direction is pressed within the corresponding direction command classes
     public void AddNewPosition(int tileAmount)
     {
-        _currentcompilePosition += tileAmount;
-        moveList.Add(_levelLayout.tiles[_currentcompilePosition].transform);
-        Debug.Log("Move count total: " + moveList.Count);
-        Debug.Log("Current compile position: " + _currentcompilePosition);
+        if (!compile.GetIsCompile())
+        {
+            CompilePair compilePair;
+            _currentcompilePosition += tileAmount;
+            var gridPos = _currentcompilePosition;
+            compilePair.cpIndex = gridPos;
+            compilePair.cpTransform = _levelLayout.tiles[gridPos].transform;
+            moveList.Add(compilePair);
+            Debug.Log("Move count total: " + moveList.Count);
+            Debug.Log("Current compile position: " + _currentcompilePosition);
+        }
+       
     }
     
     // Cancel the compile setup by resetting position and clearing the list, only if it's not empty
     public void Cancel()
     {
-        if (moveList.Count > 0)
-        {
-            _currentcompilePosition = _currentGridPosition;
+        // Only cancel the move set IF there is more than one move in the list AND
+        if (moveList.Count > 0 && !compile.GetIsCompile())
+        {     
             moveList.Clear();
-
+            _currentcompilePosition = _currentGridPosition;
             Debug.Log("Move count total: " + moveList.Count);
             Debug.Log("Current compile position: " + _currentcompilePosition);
         }
@@ -81,9 +97,12 @@ public class Player : MonoBehaviour {
     void Start () {
         _level = GameObject.Find("BackTiles");
         _levelLayout = _level.GetComponent<LevelLayout>();
-        
+
+        compileObject = GameObject.Find("Compile");
+        compile = compileObject.GetComponent<Compile>();
+
         //PlayerSetup();
-        
+
     }
 	
 	// Update is called once per frame

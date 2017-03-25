@@ -5738,7 +5738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 1204223383}
-  moveSpeed: 0.4
+  moveSpeed: 0.8
 --- !u!114 &1204223382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6027,7 +6027,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 1438543036}
   playerAnim: {fileID: 1438543041}
-  moveList: []
 --- !u!61 &1438543038
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -53,7 +53,7 @@ public class CompileCommand : TouchManager
         if (_compile)
         {      
             MoveCheck();
-            player.transform.position = Vector2.Lerp(player.transform.position, player.moveList[0].transform.position, _moveTime);
+            player.transform.position = Vector2.Lerp(player.transform.position, player.moveList[0].cpTransform.position, _moveTime);
             
         }
         TouchInput(buttonTexture);
