@@ -9,7 +9,7 @@ public class Tile : MonoBehaviour {
 
     //// - VARIABLES --------------- //// ----
     // - TILE DATA - //
-    private int  _positionIndex;
+    public int  _positionIndex;
     public bool isChestTile;
     public bool isStartTile;
     public bool isGoalTile;

@@ -7,7 +7,8 @@ using System.Collections;
 
 public class TouchManager : MonoBehaviour {
 
-  
+    public GUITexture buttonTexture;
+
     // - Gets the type of input from the user and sends an appropriate 
     // message to which PlayerControls takes care of
     public void TouchInput(GUITexture texture) {
@@ -17,8 +18,7 @@ public class TouchManager : MonoBehaviour {
             {
                 case TouchPhase.Began:
                     SendMessage("OnFirstTouchBegan");
-                    //SendMessage("OnFirstTouch");
-                   
+                                     
                     break;
 
                 case TouchPhase.Stationary:
@@ -44,8 +44,8 @@ public class TouchManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-	
-	}
+        
+    }
 	    
 	// Update is called once per frame
 	void Update () {
