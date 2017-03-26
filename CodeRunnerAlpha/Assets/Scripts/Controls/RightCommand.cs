@@ -25,10 +25,13 @@ public class RightCommand : TouchManager, ICommand
     void Start () {
         playerObject = GameObject.Find("Player");
         player = playerObject.GetComponent<Player>();
+        
     }
 	
 	// Update is called once per frame
 	void Update () {
+        
+       
         TouchInput(buttonTexture);
-	}
+    }
 }

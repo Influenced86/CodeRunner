@@ -22,7 +22,7 @@ public class LevelLayout : MonoBehaviour {
 
     // - PLAYER DATA - //
    
-    private static int      _currentPositionIndex;
+    
     
     
 
@@ -33,7 +33,13 @@ public class LevelLayout : MonoBehaviour {
     private static Vector3  _vNextRightPosition;
     private static Vector3  _vNextLeftPosition;
     private static bool     _isChestTextEnabled = false;
+
     private static int      _levelNumber = 1;
+    public int LevelNumber
+    {
+        get { return _levelNumber; }
+        set { _levelNumber = value; }
+    }
 
     public Tile[]           tiles = new Tile[48];       // WARNING : DO NOT CHANGE TO PRIVATE (would have to re-do all the tiles in the editor)
     public bool             isChestFound = false;
@@ -46,11 +52,7 @@ public class LevelLayout : MonoBehaviour {
 
     //// ------------------------------------------------------
 
-    // - GETTERS - SETTERS - PROPERTIES - // ------
-    public int GetCurrentPositionIndex()
-    {
-        return _currentPositionIndex;
-    }
+  
 
     public bool IsChestTextEnabled
     {
@@ -76,84 +78,34 @@ public class LevelLayout : MonoBehaviour {
         }
     }
 
-    private Vector3 NextTilePosition(int numberOfTiles)
-    {
-        var nextPosition = tiles[_currentPositionIndex + numberOfTiles].transform.position;
-        return nextPosition;
-    }
+   
 
     
 
-    // - GOAL CHECK - Checks which level the player is currently on and 
-    // loads the next level - //
-    private void GoalCheck()    {
-        if (tiles[_currentPositionIndex].isGoalTile)
-        {
-            controls.ResetRepeat();
-            Debug.Log("You reached the end of the level!");
-            switch (_levelNumber)
-            {
-                case 1:
-                    SceneManager.LoadScene("LevelTwo");
-                    _levelNumber = 2;
-                    break;
-                case 2:
-                    SceneManager.LoadScene("LevelThree");
-                    _levelNumber = 3;
-                    break;
-                case 3:
-                    SceneManager.LoadScene("LevelFour");
-                    _levelNumber = 4;
-                    break;
-                case 4:
-                    SceneManager.LoadScene("LevelFive");
-                    _levelNumber = 5;
-                    break;
-            }
-        }
-    }
+    
 
-    // - CHEST CHECK - Checks the current level to give out the  
-    // correct reward from that level's chest - //
-    private void ChestCheck()
-    {
-        Debug.Log("You reached a chest!");
-        switch (_levelNumber)
-        {
-            case 1:
-                controls.IsRightEnabled = true;
-                Debug.Log(controls.IsRightEnabled);
-                break;
-            case 2:
-                controls.IsBackwardEnabled = true;
-                break;
-            case 4:
-                controls.IsLeftEnabled = true;
-                break;
-
-        }
-    }
+   
 
     // - DIRECTION FUNCTION CHECK - If repeat is active, we need to know which action is being used
     // in order to be able to use recursion - //
-    private void DirectionFunctionCheck(string animationName, ref Vector3 nextTransPos)
-    {
-        switch (animationName)
-        {
-            case "Forward":
-                nextTransPos = NextTilePosition(_Forward);
-                break;
-            case "Down":
-                nextTransPos = NextTilePosition(-_Forward);
-                break;
-            case "Right":
-                nextTransPos = NextTilePosition(_Right);
-                break;
-            case "Left":
-                nextTransPos = NextTilePosition(-_Right);
-                break;
-        }
-    }
+    //private void DirectionFunctionCheck(string animationName, ref Vector3 nextTransPos)
+    //{
+    //    switch (animationName)
+    //    {
+    //        case "Forward":
+    //            nextTransPos = NextTilePosition(_Forward);
+    //            break;
+    //        case "Down":
+    //            nextTransPos = NextTilePosition(-_Forward);
+    //            break;
+    //        case "Right":
+    //            nextTransPos = NextTilePosition(_Right);
+    //            break;
+    //        case "Left":
+    //            nextTransPos = NextTilePosition(-_Right);
+    //            break;
+    //    }
+    //}
 
     //private void NextMoveCheck(ref bool isButtonTouched, int tileAmount, ref Vector3 nextTransformPosition, string animName)
     //{      
@@ -297,10 +249,10 @@ public class LevelLayout : MonoBehaviour {
 
             if (aTile.isStartTile)
             {
-                aPlayer.CurrentGridPosition = aTile.GetPosition();
-                aPlayer.CurrentCompilePosition = aTile.GetPosition();
+                aPlayer.CurrentGridCoordinate = aTile.GetPosition();
+                aPlayer.CurrentCompileCoordinate = aTile.GetPosition();
                 aPlayer.transform.position = aTile.transform.position;
-                Debug.Log(aPlayer.CurrentGridPosition);
+                Debug.Log(aPlayer.CurrentGridCoordinate);
             
                 
             }
@@ -318,11 +270,7 @@ public class LevelLayout : MonoBehaviour {
 
     }
 
-    // - CHANGE PLAYER POSITION (Not currently in use) - //
-    public void ChangePlayerPosition() {
-        thePlayer.transform.position = tiles[_currentPositionIndex].transform.position;
-    }
-
+   
     //// ------------------------------------------------------
 
    

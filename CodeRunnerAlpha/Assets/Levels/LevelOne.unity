@@ -212,14 +212,13 @@ GameObject:
   m_Component:
   - component: {fileID: 138457057}
   - component: {fileID: 138457059}
-  - component: {fileID: 138457058}
   m_Layer: 0
   m_Name: repeat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &138457057
 Transform:
   m_ObjectHideFlags: 0
@@ -238,29 +237,6 @@ Transform:
   m_Father: {fileID: 1616237316}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &138457058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 138457056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b3847c476d7a024393ac83d4e8f5391, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonTexture: {fileID: 0}
-  buttonType: 4
-  forwardButtonTexture: {fileID: 1101688422}
-  backwardButtonTexture: {fileID: 306913921}
-  rightButtonTexture: {fileID: 388387708}
-  leftButtonTexture: {fileID: 1446333276}
-  repeatButtonTexture: {fileID: 138457059}
-  repeatButtonTexture0: {fileID: 1030684715}
-  repeatButtonTexture1: {fileID: 1665435818}
-  repeatButtonTexture2: {fileID: 1733157838}
-  repeatButtonTexture3: {fileID: 441793324}
-  repeatButtonTexture4: {fileID: 1606220055}
 --- !u!131 &138457059
 GUITexture:
   m_ObjectHideFlags: 0
@@ -778,7 +754,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &306913919
 Transform:
   m_ObjectHideFlags: 0
@@ -1237,7 +1213,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &388387706
 Transform:
   m_ObjectHideFlags: 0
@@ -5738,7 +5714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 1204223383}
-  moveSpeed: 0.8
+  moveSpeed: 1.6
 --- !u!114 &1204223382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6186,7 +6162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1446333274
 Transform:
   m_ObjectHideFlags: 0
@@ -7122,6 +7098,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1616237316}
   - component: {fileID: 1616237317}
+  - component: {fileID: 1616237318}
   m_Layer: 0
   m_Name: Buttons
   m_TagString: Untagged
@@ -7161,6 +7138,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 0}
+--- !u!114 &1616237318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1616237315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b3847c476d7a024393ac83d4e8f5391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upButtonTexture: {fileID: 1101688422}
+  downButtonTexture: {fileID: 306913921}
+  rightButtonTexture: {fileID: 388387708}
+  leftButtonTexture: {fileID: 1446333276}
 --- !u!1 &1620794582
 GameObject:
   m_ObjectHideFlags: 0

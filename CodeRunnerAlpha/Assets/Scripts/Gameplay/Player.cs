@@ -4,7 +4,7 @@ using UnityEngine;
 
 public struct CompilePair
 {
-    public int cpIndex;
+    public int cpCoordinate;
     public Transform cpTransform;
 }
 
@@ -16,9 +16,9 @@ public class Player : MonoBehaviour {
     // The level
     private GameObject _level;
     private LevelLayout _levelLayout;
-
-    private GameObject compileObject;
-    private Compile compile;
+    // The compiler
+    private GameObject _compileObject;
+    private Compile _compile;
 
     // Used to store each compile movement, grid index value and tile transform
     public List<CompilePair> moveList = new List<CompilePair>();
@@ -27,27 +27,18 @@ public class Player : MonoBehaviour {
     private const float _StandardSpeed = 0.4f;
     private const float _RepeatSpeed = 1.0f;
     
-    private static int _currentGridPosition;
-    private static int _currentcompilePosition;
+    private static int _currentGridCoordinate;
+    private static int _currentCompileCoordinate;
 
-    //public float MoveTime
-    //{
-    //    get { return _moveTime; }
-    //    set { }
-    //}
-    //public void SetMoveCheck(bool val)
-    //{
-    //    _moveCheck = val;
-    //}
-    public int CurrentGridPosition
+    public int CurrentGridCoordinate
     {
-        get { return _currentGridPosition; }
-        set { _currentGridPosition = value; }
+        get { return _currentGridCoordinate; }
+        set { _currentGridCoordinate = value; }
     }
-    public int CurrentCompilePosition
+    public int CurrentCompileCoordinate
     {
-        get { return _currentcompilePosition; }
-        set { _currentcompilePosition = value; }
+        get { return _currentCompileCoordinate; }
+        set { _currentCompileCoordinate = value; }
     }
 
     // - MOVE CHECK - Provides the movement of the player with a static 
@@ -55,19 +46,24 @@ public class Player : MonoBehaviour {
     // interpolation - //
     
 
-    // Called each time a direction is pressed within the corresponding direction command classes
+    // Called each time a direction is pressed within the corresponding direction command classes 
+    // Adds a pair to a list, the tile grid index and the transform of that tile
     public void AddNewPosition(int tileAmount)
     {
-        if (!compile.GetIsCompile())
+        // Only add if player is not moving
+        if (!_compile.GetIsCompile())
         {
-            CompilePair compilePair;
-            _currentcompilePosition += tileAmount;
-            var gridPos = _currentcompilePosition;
-            compilePair.cpIndex = gridPos;
+            // Updates the grid coordindate for the compile 
+            _currentCompileCoordinate += tileAmount;
+            var gridPos = _currentCompileCoordinate;
+            // Setup pair to add to compile list
+            CompilePair compilePair;    
+            compilePair.cpCoordinate = gridPos;
             compilePair.cpTransform = _levelLayout.tiles[gridPos].transform;
             moveList.Add(compilePair);
+
             Debug.Log("Move count total: " + moveList.Count);
-            Debug.Log("Current compile position: " + _currentcompilePosition);
+            Debug.Log("Current compile position: " + _currentCompileCoordinate);
         }
        
     }
@@ -76,16 +72,16 @@ public class Player : MonoBehaviour {
     public void Cancel()
     {
         // Only cancel the move set IF there is more than one move in the list AND
-        if (moveList.Count > 0 && !compile.GetIsCompile())
+        if (moveList.Count > 0 && !_compile.GetIsCompile())
         {     
             moveList.Clear();
-            _currentcompilePosition = _currentGridPosition;
+            _currentCompileCoordinate = _currentGridCoordinate;
             Debug.Log("Move count total: " + moveList.Count);
-            Debug.Log("Current compile position: " + _currentcompilePosition);
+            Debug.Log("Current compile position: " + _currentCompileCoordinate);
         }
     }
    
-    
+   
 
     private void PlayerSetup()
     {
@@ -98,15 +94,14 @@ public class Player : MonoBehaviour {
         _level = GameObject.Find("BackTiles");
         _levelLayout = _level.GetComponent<LevelLayout>();
 
-        compileObject = GameObject.Find("Compile");
-        compile = compileObject.GetComponent<Compile>();
+        _compileObject = GameObject.Find("Compile");
+        _compile = _compileObject.GetComponent<Compile>();
 
-        //PlayerSetup();
 
     }
 	
 	// Update is called once per frame
 	void Update () {
-       
+        
     }
 }

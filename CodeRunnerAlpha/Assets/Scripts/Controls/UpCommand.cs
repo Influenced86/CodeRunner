@@ -6,6 +6,7 @@ public class UpCommand : TouchManager, ICommand
 {
     private GameObject playerObject;
     private Player player;
+    private static bool _upEnabled = true;
 
     
 
