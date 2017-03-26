@@ -12,6 +12,14 @@ public class PlayerControls : MonoBehaviour {
 
     private static int _repeat;
 
+    private GameObject _compileObject;
+    private Compile _compile;
+
+    
+
+    private GameObject _playerObject;
+    private Player _player;
+
     //// - VARIABLES -------------------------- ///// ----------
     // --------------------------------------------
     // - TEXTURES - // ----------------------------
@@ -29,7 +37,7 @@ public class PlayerControls : MonoBehaviour {
     private static bool _isBackwardEnabled = false;
     private static bool _isRepeatEnabled = false;
 
-    private GameObject theLayout;
+    private GameObject levelLayoutObject;
     private LevelLayout levelLayout;
 
     // -------------------------------------------
@@ -82,31 +90,7 @@ public class PlayerControls : MonoBehaviour {
     }
 
 
-    //// - METHODS --------------------------------///////------------
-    // - SETUP BUTTONS - Connects the correct textures attached in Unity to the
-    // corresponding texture variables. Used in ButtonActiveCheck() to
-    // enable/disable them - //
-    //private void SetupButtons() { 
-    //    switch(buttonType)
-    //    {
-    //        case ButtonTypes.Forward:
-    //            upButtonTexture = this.GetComponent<GUITexture>();
-    //            break;
-    //        case ButtonTypes.Backward:
-    //            downButtonTexture = this.GetComponent<GUITexture>();
-    //            break;
-    //        case ButtonTypes.Left:
-    //            leftButtonTexture = this.GetComponent<GUITexture>();
-    //            break;
-    //        case ButtonTypes.Right:
-    //            rightButtonTexture = this.GetComponent<GUITexture>();
-    //            break;
-    //        case ButtonTypes.Repeat:
-    //            //repeatButtonTexture = this.GetComponent<GUITexture>();
-    //            break;
-            
-    //    }
-    //}
+   
 
     // - TOUCH MESSAGES - // - Implements the messages received from 
     // TouchManager - //
@@ -146,48 +130,47 @@ public class PlayerControls : MonoBehaviour {
     // Bools are static and are created within LevelLayout - //
     public void ButtonActiveCheck()
     {
+        
         upButtonTexture.gameObject.SetActive(_isForwardEnabled);
         rightButtonTexture.gameObject.SetActive(_isRightEnabled);
         leftButtonTexture.gameObject.SetActive(_isLeftEnabled);
         downButtonTexture.gameObject.SetActive(_isBackwardEnabled);
         //repeatButtonTexture.gameObject.SetActive(_isRepeatEnabled);
+        //if(_compile.GetIsCompile())
+        //{
+        //    _compile.buttonTexture.color = Color.gray;
+            
+        //}
+        //else
+        //{
+        //    _compile.buttonTexture.color = Color.white;
+        //    if(_player.moveCount > 0)
+        //    {
+        //        _cancel.buttonTexture.color = Color.white;
+        //    }
+            
+        //}
+
+        
     }
 
    
 
-    //public bool IsRightTouched
-    //{
-    //    get { return isRightTouched; }
-    //    set { isRightTouched = value; }
-    //}
-    //public bool IsLeftTouched
-    //{
-    //    get { return isLeftTouched; }
-    //    set { isLeftTouched = value; }
-    //}
-    //public bool IsBackwardTouched
-    //{
-    //    get { return isBackwardTouched; }
-    //    set { isBackwardTouched = value; }
-    //}
-    //public bool IsForwardTouched
-    //{
-    //    get { return isForwardTouched; }
-    //    set { isForwardTouched = value; }
-    //}
-    //public bool IsRepeatTouched
-    //{
-    //    get { return isRepeatTouched; }
-    //    set { isRepeatTouched = value; }
-    //}
 
-    //// ------------------------------------------------------
 
     void Start () {
         //SetupButtons();
         //ButtonActiveCheck();
-        theLayout = GameObject.Find("BackTiles");
-        levelLayout = theLayout.GetComponent<LevelLayout>();
+        levelLayoutObject = GameObject.Find("BackTiles");
+        levelLayout = levelLayoutObject.GetComponent<LevelLayout>();
+
+        _compileObject = GameObject.Find("Compile");
+        _compile = _compileObject.GetComponent<Compile>();
+
+        
+
+        _playerObject = GameObject.Find("Player");
+        _player = _playerObject.GetComponent<Player>();
 
     }
 

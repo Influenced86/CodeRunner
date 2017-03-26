@@ -13,25 +13,13 @@ public class LevelLayout : MonoBehaviour {
     private GameObject   thePlayer;
     private Player       aPlayer;
 
-
-    public GameObject   chestObject = null;
+    public GameObject   chestObject;
     public Animator     playerAnim;
-        
+
     // - GUI TEXTURES - //
-    public GUITexture chestTextTexture = null;
-
-    // - PLAYER DATA - //
-   
-    
-    
-    
-
+    public GUITexture chestTextTexture;
     // - LEVEL DATA - //
-    private const int       _Forward = 6, _Right = 1;
-    private static Vector3  _vNextForwardPosition;
-    private static Vector3  _vNextBackwardPosition;
-    private static Vector3  _vNextRightPosition;
-    private static Vector3  _vNextLeftPosition;
+    
     private static bool     _isChestTextEnabled = false;
 
     private static int      _levelNumber = 1;
@@ -44,9 +32,6 @@ public class LevelLayout : MonoBehaviour {
     public Tile[]           tiles = new Tile[48];       // WARNING : DO NOT CHANGE TO PRIVATE (would have to re-do all the tiles in the editor)
     public bool             isChestFound = false;
    
-
-    private GameObject theControls;
-    private PlayerControls controls;
 
     public float rewardTextTimer = 3.2f;
 
@@ -290,28 +275,12 @@ public class LevelLayout : MonoBehaviour {
 	void Update () {
         
 
-        //if (_currentPositionIndex <= 42)
-        //{
-        //    _vNextForwardPosition = NextTilePosition(_Forward);
-        //    NextMoveCheck(ref PlayerControls.isForwardTouched, _Forward, ref _vNextForwardPosition, "Forward");
-        //}
         
-        //if (_currentPositionIndex >= 6)
-        //{
-        //    _vNextBackwardPosition = NextTilePosition(-_Forward);
-        //    NextMoveCheck(ref PlayerControls.isBackwardTouched, -_Forward, ref _vNextBackwardPosition, "Down");
-        //}
-
-        //_vNextRightPosition = NextTilePosition(_Right);
-        //NextMoveCheck(ref PlayerControls.isRightTouched, _Right, ref _vNextRightPosition, "Right");
-
-        //_vNextLeftPosition = NextTilePosition(-_Right);
-        //NextMoveCheck(ref PlayerControls.isLeftTouched, -_Right, ref _vNextLeftPosition, "Left");
 
         CountdownDisableText(chestTextTexture);
         chestTextTexture.gameObject.SetActive(_isChestTextEnabled);
 
-        controls.ButtonActiveCheck();
+        
     }
 
 }

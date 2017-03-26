@@ -23,9 +23,12 @@ public class Player : MonoBehaviour {
     // Used to store each compile movement, grid index value and tile transform
     public List<CompilePair> moveList = new List<CompilePair>();
 
-    private const float _SlowSpeed = 0.2f;
-    private const float _StandardSpeed = 0.4f;
+    public float        moveSpeed = 1.0f;
+    public const float  CompileSpeedIncrease = 0.014f;
+    private const float _SlowSpeed = 0.7f;
+    private const float _StandardSpeed = 1.0f;
     private const float _RepeatSpeed = 1.0f;
+
     
     private static int _currentGridCoordinate;
     private static int _currentCompileCoordinate;
@@ -39,6 +42,16 @@ public class Player : MonoBehaviour {
     {
         get { return _currentCompileCoordinate; }
         set { _currentCompileCoordinate = value; }
+    }
+    public float StandardSpeed
+    {
+        get { return _StandardSpeed; }
+        set { }
+    }
+    public float SlowSpeed
+    {
+        get { return _SlowSpeed; }
+        set { }
     }
 
     // - MOVE CHECK - Provides the movement of the player with a static 
@@ -55,12 +68,21 @@ public class Player : MonoBehaviour {
         {
             // Updates the grid coordindate for the compile 
             _currentCompileCoordinate += tileAmount;
-            var gridPos = _currentCompileCoordinate;
-            // Setup pair to add to compile list
-            CompilePair compilePair;    
-            compilePair.cpCoordinate = gridPos;
-            compilePair.cpTransform = _levelLayout.tiles[gridPos].transform;
-            moveList.Add(compilePair);
+            // Only add to the list if it's not out of bounds
+            if (_currentCompileCoordinate >= 0 && _currentCompileCoordinate <= 47)
+            {
+                var gridPos = _currentCompileCoordinate;
+                // Setup pair to add to compile list
+                CompilePair compilePair;
+                compilePair.cpCoordinate = gridPos;
+                compilePair.cpTransform = _levelLayout.tiles[gridPos].transform;
+                moveList.Add(compilePair);
+            }
+            // If out of bounds, return to previous compile coordinate
+            else
+            {
+                _currentCompileCoordinate -= tileAmount;
+            }
 
             Debug.Log("Move count total: " + moveList.Count);
             Debug.Log("Current compile position: " + _currentCompileCoordinate);
@@ -78,6 +100,13 @@ public class Player : MonoBehaviour {
             _currentCompileCoordinate = _currentGridCoordinate;
             Debug.Log("Move count total: " + moveList.Count);
             Debug.Log("Current compile position: " + _currentCompileCoordinate);
+        }
+        else
+        {
+            if(_levelLayout.IsChestTextEnabled)
+            {
+                _levelLayout.IsChestTextEnabled = false;
+            }
         }
     }
    
@@ -97,7 +126,7 @@ public class Player : MonoBehaviour {
         _compileObject = GameObject.Find("Compile");
         _compile = _compileObject.GetComponent<Compile>();
 
-
+        moveSpeed = _StandardSpeed;
     }
 	
 	// Update is called once per frame

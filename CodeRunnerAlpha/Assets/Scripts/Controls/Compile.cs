@@ -11,15 +11,15 @@ public class Compile : TouchManager
     private GameObject _levelObject;
     private LevelLayout _levelLayout;
 
-    private GameObject _rightObject;
-    private RightCommand _right;
-
     private GameObject _playerControlsObject;
     private PlayerControls _playerControls;
 
+    private GameObject _cancelObject;
+    private CancelCommand _cancel;
+
     private static float _moveTime = 0;
     private static bool _moveCheck = false;
-    public float moveSpeed = 0.4f;
+    
 
     private static bool _isCompile = false;
     private static int _compileListIterator = 0;
@@ -41,7 +41,7 @@ public class Compile : TouchManager
             _moveTime = 0.0f;
             _moveCheck = true;
         }
-        _moveTime += Time.deltaTime * moveSpeed;
+        _moveTime += Time.deltaTime * _player.moveSpeed;
     }
     // Called when compile button is pressed
     public void CompileStart()
@@ -102,16 +102,16 @@ public class Compile : TouchManager
                 EndOfCompile();
                 _levelLayout.IsChestTextEnabled = true;             
                 _playerControls.IsRightEnabled = true;
-                
-
                 break;
             case 2:
                 EndOfCompile();
-                //_playerControls.IsBackwardEnabled = true;
+                _levelLayout.IsChestTextEnabled = true;
+                _playerControls.IsBackwardEnabled = true;
                 break;
             case 4:
                 EndOfCompile();
-                //_playerControls.IsLeftEnabled = true;
+                _levelLayout.IsChestTextEnabled = true;
+                _playerControls.IsLeftEnabled = true;
                 break;
 
         }
@@ -176,10 +176,11 @@ public class Compile : TouchManager
     {
         _player.moveList.Clear();
         _player.CurrentCompileCoordinate = _player.CurrentGridCoordinate;
-
+        _player.moveSpeed = _player.StandardSpeed;
         _compileListIterator = 0;
         _isCompile = false;
         CancelAnim();
+        
         
     }
     // Called when player presses compile button. Reads the list that has been created from the player's directional movement
@@ -192,20 +193,24 @@ public class Compile : TouchManager
             // Keep going until the last move has complete
             if(_compileListIterator < _player.moveList.Count)
             {
+                
                 // Work out the value difference between current tile index and next tile index
                 var nextGridCoordinate = _player.moveList[_compileListIterator].cpCoordinate - _player.CurrentGridCoordinate;
                 // Set player animation
                 SetPlayerAnimation(nextGridCoordinate);
                 // If the next tile on the list is a wall, stop
                 if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Wall)    EndOfCompile();
-                if(_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Chest)    ChestCheck();
+                if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Chest)   ChestCheck();
+                if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Slow)    _player.moveSpeed = _player.SlowSpeed;
+                //if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Open)   _player.moveSpeed = _player.StandardSpeed;  
 
                 // Setup and perform movement to current tile in the list
                 MoveCheck();
                
                 // Move player to next tile in list
                 _player.transform.position = Vector2.Lerp(_levelLayout.tiles[_player.CurrentGridCoordinate].transform.position, _player.moveList[_compileListIterator].cpTransform.position, _moveTime);
-                
+                // The more moves the player makes, the faster the player moves
+                _player.moveSpeed += Player.CompileSpeedIncrease;
                 // Once the player has reached the next tile, update grid index position of player
                 if (_player.transform.position == _player.moveList[_compileListIterator].cpTransform.position)
                 {
@@ -244,10 +249,26 @@ public class Compile : TouchManager
 
         _playerControlsObject = GameObject.Find("Buttons");
         _playerControls = _playerControlsObject.GetComponent<PlayerControls>();
-	}
+
+        _cancelObject = GameObject.Find("Cancel");
+        _cancel = _cancelObject.GetComponent<CancelCommand>();
+    }
     
 	// Update is called once per frame
 	void Update () {
+        
+        // If buttons are usable (moves are declared), brighten button colour
+        if(_player.moveList.Count > 0 && !_isCompile)
+        {
+            buttonTexture.color = Color.white;
+            _cancel.buttonTexture.color = Color.white;
+        }
+        // Otherwise darken out buttons
+        else 
+        {
+            buttonTexture.color = new Color(0.7f, 0.7f, 0.7f);
+            _cancel.buttonTexture.color = new Color(0.4f, 0.4f, 0.4f);
+        }
         Go();       
         TouchInput(buttonTexture);
         

@@ -16,7 +16,8 @@ public class LeftCommand : TouchManager, ICommand
 
     private void OnFirstTouchBegan()
     {
-        //Execute(player);
+        Debug.Log("Left touched");
+        Execute(player);
     }
     private void OnFirstTouchStay() { }
     private void OnFirstTouchEnd() { }
@@ -29,6 +30,6 @@ public class LeftCommand : TouchManager, ICommand
 	
 	// Update is called once per frame
 	void Update () {
-		
+        TouchInput(buttonTexture);
 	}
 }

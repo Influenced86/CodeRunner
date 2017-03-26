@@ -6,17 +6,12 @@ public class UpCommand : TouchManager, ICommand
 {
     private GameObject playerObject;
     private Player player;
-    private static bool _upEnabled = true;
-
-    
-
+ 
     private const int _Up = 6;
 
     public void Execute(Player aPlayer)
     {
-       
-        aPlayer.AddNewPosition(_Up);
-        
+        aPlayer.AddNewPosition(_Up);        
     }
 
     private void OnFirstTouchBegan()

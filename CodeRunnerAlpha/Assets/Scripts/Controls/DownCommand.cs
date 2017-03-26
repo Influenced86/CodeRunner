@@ -7,7 +7,7 @@ public class DownCommand : TouchManager, ICommand
     private GameObject playerObject;
     private Player player;
 
-    private const int _Down = -1;
+    private const int _Down = -6;
 
     public void Execute(Player aPlayer)
     {
@@ -16,7 +16,8 @@ public class DownCommand : TouchManager, ICommand
 
     private void OnFirstTouchBegan()
     {
-        //Execute(player);
+        Debug.Log("Down touched");
+        Execute(player);
     }
     private void OnFirstTouchStay() { }
     private void OnFirstTouchEnd() { }
@@ -30,6 +31,6 @@ public class DownCommand : TouchManager, ICommand
 	// Update is called once per frame
 	void Update ()
     {
-		
+        TouchInput(buttonTexture);
 	}
 }
