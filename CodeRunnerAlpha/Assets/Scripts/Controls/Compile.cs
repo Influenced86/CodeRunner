@@ -5,24 +5,25 @@ using UnityEngine;
 
 public class Compile : TouchManager
 {
-    private GameObject _playerObject;
-    private Player _player;
+    private GameObject      _playerObject;
+    private Player          _player;
 
-    private GameObject _levelObject;
-    private LevelLayout _levelLayout;
+    private GameObject      _levelObject;
+    private LevelLayout     _levelLayout;
 
-    private GameObject _playerControlsObject;
-    private PlayerControls _playerControls;
+    private GameObject      _playerControlsObject;
+    private PlayerControls  _playerControls;
 
-    private GameObject _cancelObject;
-    private CancelCommand _cancel;
+    private GameObject      _cancelObject;
+    private CancelCommand   _cancel;
 
-    private static float _moveTime = 0;
-    private static bool _moveCheck = false;
+    public GameObject       PathIcon;
+    public GameObject       WallPathIcon;
     
-
-    private static bool _isCompile = false;
-    private static int _compileListIterator = 0;
+    private static float    _moveTime = 0;
+    private static bool     _moveCheck = false;   
+    private static bool     _isCompile = false;
+    private static int  _compileListIterator = 0;
 
     public int CompileListIterator
     {
@@ -33,6 +34,7 @@ public class Compile : TouchManager
     {
         return _isCompile;
     }
+
     // Creates a static speed for the player
     public void MoveCheck()
     {
@@ -43,12 +45,16 @@ public class Compile : TouchManager
         }
         _moveTime += Time.deltaTime * _player.moveSpeed;
     }
-    // Called when compile button is pressed
+
+    // Called when compile button is pressed. 
     public void CompileStart()
     {
         _isCompile = true;
-    }
+        _levelLayout.CurrentIconArrayIndex = 0;
+        DestroyClones();
         
+    }
+    // When the player touches the texture belonging to this object    
     private void OnFirstTouchBegan()
     {
         Debug.Log("Compile Touched!");
@@ -64,7 +70,6 @@ public class Compile : TouchManager
     {
         if (_levelLayout.tiles[_player.CurrentGridCoordinate].isGoalTile)
         {
-            //controls.ResetRepeat();
             Debug.Log("You reached the end of the level!");
             switch (_levelLayout.LevelNumber)
             {
@@ -91,7 +96,7 @@ public class Compile : TouchManager
             }
         }
     }
-    // - CHEST CHECK - Checks the current level to give out the  
+    // Checks the current level to give out the  
     // correct reward from that level's chest - //
     private void ChestCheck()
     {
@@ -117,6 +122,8 @@ public class Compile : TouchManager
         }
     }
 
+    // Sets up the correct animation bools depending on the difference value
+    // between the current coordinate and the next
     private void SetUpAnim()
     {
         _player.playerAnim.SetBool("Forward", true);
@@ -152,6 +159,7 @@ public class Compile : TouchManager
         _player.playerAnim.SetBool("Right", false);
         _player.playerAnim.SetBool("Left", false);
     }
+
     // Determines which player animation to play
     private void SetPlayerAnimation(int nextMoveIndex)
     {
@@ -172,6 +180,7 @@ public class Compile : TouchManager
         }
     }
 
+    // Clears the movelist and sets up data ready for the next move. 
     private void EndOfCompile()
     {
         _player.moveList.Clear();
@@ -179,9 +188,54 @@ public class Compile : TouchManager
         _player.moveSpeed = _player.StandardSpeed;
         _compileListIterator = 0;
         _isCompile = false;
-        CancelAnim();
-        
-        
+        CancelAnim();    
+    }
+
+    // Sets up next path icon during compile movement. Determined by the difference in value between the current
+    // grid coordinate and the next one.
+    private void SetupPathIcons(int nextMoveIndex)
+    {
+        switch (nextMoveIndex)
+        {
+            case 6:
+                if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Wall)
+                {
+                    Instantiate(WallPathIcon, _player.moveList[_compileListIterator].cpTransform.position - new Vector3(0, 1f, 0), Quaternion.Euler(0, 0, 0));
+                }
+                Instantiate(PathIcon, _player.moveList[_compileListIterator].cpTransform.position - new Vector3(0, 1f, 0), Quaternion.Euler(0, 0, 0));
+                break;
+            case -6:
+                if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Wall)
+                {
+                    Instantiate(WallPathIcon, _player.moveList[_compileListIterator].cpTransform.position - new Vector3(0, 0f, 0), Quaternion.Euler(0, 0, 0));
+                }
+                Instantiate(PathIcon, _player.moveList[_compileListIterator].cpTransform.position - new Vector3(0, 0f, 0), Quaternion.Euler(0, 0, 0));
+                break;
+            case 1:
+                if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Wall)
+                {
+                    Instantiate(WallPathIcon, _player.moveList[_compileListIterator].cpTransform.position - new Vector3(1f, 0, 0), Quaternion.Euler(0, 0, 270));
+                }
+                Instantiate(PathIcon, _player.moveList[_compileListIterator].cpTransform.position - new Vector3(1f, 0, 0), Quaternion.Euler(0, 0, 270));
+                break;
+            case -1:
+                if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Wall)
+                {
+                    Instantiate(WallPathIcon, _player.moveList[_compileListIterator].cpTransform.position - new Vector3(-1f, 0f, 0), Quaternion.Euler(0, 0, 90));
+                }
+                Instantiate(PathIcon, _player.moveList[_compileListIterator].cpTransform.position - new Vector3(-1f, 0, 0), Quaternion.Euler(0, 0, 90));
+                break;
+        }
+    }
+
+    // Destroy all objects which were spawned dynamically
+    private void DestroyClones()
+    {
+        var clones = GameObject.FindGameObjectsWithTag("Clone");
+        foreach (var clone in clones)
+        {
+            Destroy(clone);
+        }
     }
     // Called when player presses compile button. Reads the list that has been created from the player's directional movement
     // and moves the player accordingly
@@ -193,17 +247,18 @@ public class Compile : TouchManager
             // Keep going until the last move has complete
             if(_compileListIterator < _player.moveList.Count)
             {
-                
+               
                 // Work out the value difference between current tile index and next tile index
                 var nextGridCoordinate = _player.moveList[_compileListIterator].cpCoordinate - _player.CurrentGridCoordinate;
                 // Set player animation
                 SetPlayerAnimation(nextGridCoordinate);
+                // Set next path movement icon
+                SetupPathIcons(nextGridCoordinate);
                 // If the next tile on the list is a wall, stop
-                if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Wall)    EndOfCompile();
+                if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Wall) EndOfCompile();              
                 if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Chest)   ChestCheck();
                 if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Slow)    _player.moveSpeed = _player.SlowSpeed;
-                //if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Open)   _player.moveSpeed = _player.StandardSpeed;  
-
+                  
                 // Setup and perform movement to current tile in the list
                 MoveCheck();
                
@@ -223,7 +278,9 @@ public class Compile : TouchManager
                     // If it's the last position in the list, stop
                     if (_compileListIterator == _player.moveList.Count)
                     {
+                        DestroyClones();
                         EndOfCompile();
+                       
                     }                       
                     // Recall function if there are still more items left in the list
                     Go();
@@ -269,6 +326,7 @@ public class Compile : TouchManager
             buttonTexture.color = new Color(0.7f, 0.7f, 0.7f);
             _cancel.buttonTexture.color = new Color(0.4f, 0.4f, 0.4f);
         }
+        // Compile
         Go();       
         TouchInput(buttonTexture);
         

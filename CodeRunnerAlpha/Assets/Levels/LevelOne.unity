@@ -754,7 +754,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &306913919
 Transform:
   m_ObjectHideFlags: 0
@@ -780,6 +780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 306913921}
+  downIcon: {fileID: 0}
 --- !u!131 &306913921
 GUITexture:
   m_ObjectHideFlags: 0
@@ -1213,7 +1214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &388387706
 Transform:
   m_ObjectHideFlags: 0
@@ -1239,6 +1240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 388387708}
+  rightIcon: {fileID: 1046771322652080, guid: 25717edd388e34144af6a4729022aa47, type: 2}
 --- !u!131 &388387708
 GUITexture:
   m_ObjectHideFlags: 0
@@ -1900,7 +1902,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 477744182}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.7018895, y: -2.745405, z: 0}
+  m_LocalPosition: {x: 2.73, y: -2.745405, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 347758641}
@@ -4848,6 +4850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 1101688422}
+  upIcon: {fileID: 1523953682691728, guid: 435dee3354b99ca409497aa24a6822ec, type: 2}
 --- !u!1 &1114272350
 GameObject:
   m_ObjectHideFlags: 0
@@ -5713,7 +5716,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 1204223383}
-  moveSpeed: 1.6
+  PathIcon: {fileID: 1485689225674870, guid: 5c277cf613d4b8a4a93ecb6475a76c5a, type: 2}
+  WallPathIcon: {fileID: 1077950103421626, guid: 4cbb487ef13a21245add93d63b6a4854,
+    type: 2}
 --- !u!131 &1204223383
 GUITexture:
   m_ObjectHideFlags: 0
@@ -5991,6 +5996,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 1438543036}
   playerAnim: {fileID: 1438543041}
+  moveSpeed: 1
 --- !u!61 &1438543038
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6150,7 +6156,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1446333274
 Transform:
   m_ObjectHideFlags: 0
@@ -6176,6 +6182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 1446333276}
+  leftIcon: {fileID: 0}
 --- !u!131 &1446333276
 GUITexture:
   m_ObjectHideFlags: 0
@@ -7312,6 +7319,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chestObject: {fileID: 939410279}
   playerAnim: {fileID: 1438543041}
+  iconArray:
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
+  - {x: 8.802486e-39, y: 0}
   chestTextTexture: {fileID: 461261311}
   tiles:
   - {fileID: 1919032943}

@@ -1,50 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-// - Sets up the user guide buttons labelled as '?' within
-// the game - //
+// Sets up the user guide buttons labelled as '?' within
+// the game
 
 public class Helper : TouchManager
 {
-    //// - VARIABLES -------------------------- ///// ----------
-    // - ENUMS - // -------------------------------
     public enum HelperType { helperForward, helperChest, helperGoal, helperMud };
     public HelperType helperType;
-    // --------------------------------------------
-
-    // - TEXTURES - // ----------------------------
-    public GUITexture helperTexture = null;
-    public GUITexture textTexture = null;
-    // --------------------------------------------
-
-    // - VECTORS - // ----------------------------
-    private Vector3 _vInitialPosition;
-    private Vector3 _vYMax;
-    private Vector3 _vYMin;
-    // --------------------------------------------
-
-    // - GAMEOBJECTS - // -------------------------
-    public GameObject helperButtonObject = null;
-    // --------------------------------------------
-
-    // - HELPER DATA - // -------------------------
+   
+    public GUITexture       helperTexture;
+    public GUITexture       textTexture;
+   
+    private Vector3         _vInitialPosition;
+    private Vector3         _vYMax;
+    private Vector3         _vYMin;
+  
+    public GameObject       helperButtonObject;
+  
     private static float    _floatSpeed;
-    private bool            _isStartMove;  
-    // --------------------------------------------
+    private bool            _isStartMove;
 
-    //// - METHODS -------------------------///////------------
-
-    // - TOUCH MESSAGES - // - Implements the messages received from 
-    // TouchManager. Enables the associated text popups for helper 
-    // buttons - //
+    //  Implements the messages received from TouchManager. Enables the associated text 
+    //  popups for helper buttons
     private void OnFirstTouchBegan()
     { 
         switch(helperType)
         {
             case HelperType.helperForward:
                 textTexture.gameObject.SetActive(true);
-                //TextCheck(textTexture, ref isTextOn[0]);
-                //Debug.Log("YOU TOUCHED THE FORWARD HELPER");
                 break;
 
             case HelperType.helperChest:
@@ -61,9 +45,7 @@ public class Helper : TouchManager
                 textTexture.gameObject.SetActive(true);
                 Debug.Log("YOU TOUCHED THE MUD HELPER"); 
                 break;
-        }
-
-       
+        } 
     }
     private void OnFirstTouchMoved()
     {

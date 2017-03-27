@@ -4,18 +4,30 @@ using UnityEngine;
 
 public class CancelCommand : TouchManager, ICommand
 {
-    private GameObject playerObject;
-    private Player player;
+    private GameObject      _playerObject;
+    private Player          _player;
 
+    private GameObject      _levelLayoutObject;
+    private LevelLayout     _levelLayout;
+
+
+    // Run each time player presses corresponding button (texture)
     public void Execute(Player aPlayer)
-    {
+    { 
         aPlayer.Cancel();
+        // Remove all direction icons from the screen
+        var clones = GameObject.FindGameObjectsWithTag("Clone");
+        _levelLayout.CurrentIconArrayIndex = 0;
+        foreach(var clone in clones)
+        {
+            Destroy(clone);  
+        } 
     }
 
     private void OnFirstTouchBegan()
     {
         Debug.Log("Cancel touched!");
-        Execute(player);
+        Execute(_player);
 
     }
     private void OnFirstTouchStay() { }
@@ -23,8 +35,11 @@ public class CancelCommand : TouchManager, ICommand
 
     // Use this for initialization
     void Start () {
-        playerObject = GameObject.Find("Player");
-        player = playerObject.GetComponent<Player>();
+        _playerObject = GameObject.Find("Player");
+        _player = _playerObject.GetComponent<Player>();
+
+        _levelLayoutObject = GameObject.Find("BackTiles");
+        _levelLayout = _levelLayoutObject.GetComponent<LevelLayout>();
     }
 	
 	// Update is called once per frame

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Pair of values, tile grid coordinate, and the transform for that tile
 public struct CompilePair
 {
     public int cpCoordinate;
@@ -11,27 +12,26 @@ public struct CompilePair
 public class Player : MonoBehaviour {
 
     // The player
-    public GameObject playerObject;
-    public Animator playerAnim;
+    public GameObject       playerObject;
+    public Animator         playerAnim;
     // The level
-    private GameObject _level;
-    private LevelLayout _levelLayout;
+    private GameObject      _level;
+    private LevelLayout     _levelLayout;
     // The compiler
-    private GameObject _compileObject;
-    private Compile _compile;
+    private GameObject      _compileObject;
+    private Compile         _compile;
 
     // Used to store each compile movement, grid index value and tile transform
     public List<CompilePair> moveList = new List<CompilePair>();
 
-    public float        moveSpeed = 1.0f;
-    public const float  CompileSpeedIncrease = 0.014f;
-    private const float _SlowSpeed = 0.7f;
-    private const float _StandardSpeed = 1.0f;
-    private const float _RepeatSpeed = 1.0f;
-
-    
-    private static int _currentGridCoordinate;
-    private static int _currentCompileCoordinate;
+    public float            moveSpeed = 1.0f;
+    public const float      CompileSpeedIncrease = 0.014f;
+    private const float     _SlowSpeed = 0.7f;
+    private const float     _StandardSpeed = 1.0f;
+    private const float     _RepeatSpeed = 1.0f;
+   
+    private static int      _currentGridCoordinate;
+    private static int      _currentCompileCoordinate;
 
     public int CurrentGridCoordinate
     {
@@ -54,11 +54,6 @@ public class Player : MonoBehaviour {
         set { }
     }
 
-    // - MOVE CHECK - Provides the movement of the player with a static 
-    // speed. Removes the problem of the smoothing when using linear
-    // interpolation - //
-    
-
     // Called each time a direction is pressed within the corresponding direction command classes 
     // Adds a pair to a list, the tile grid index and the transform of that tile
     public void AddNewPosition(int tileAmount)
@@ -77,6 +72,7 @@ public class Player : MonoBehaviour {
                 compilePair.cpCoordinate = gridPos;
                 compilePair.cpTransform = _levelLayout.tiles[gridPos].transform;
                 moveList.Add(compilePair);
+                
             }
             // If out of bounds, return to previous compile coordinate
             else
@@ -93,7 +89,7 @@ public class Player : MonoBehaviour {
     // Cancel the compile setup by resetting position and clearing the list, only if it's not empty
     public void Cancel()
     {
-        // Only cancel the move set IF there is more than one move in the list AND
+        // Only cancel the move set IF there is more than one move in the list AND is not compiling
         if (moveList.Count > 0 && !_compile.GetIsCompile())
         {     
             moveList.Clear();
@@ -109,16 +105,7 @@ public class Player : MonoBehaviour {
             }
         }
     }
-   
-   
-
-    private void PlayerSetup()
-    {
-       
-        
-    }
-
-    // Use this for initialization
+      
     void Start () {
         _level = GameObject.Find("BackTiles");
         _levelLayout = _level.GetComponent<LevelLayout>();
@@ -129,7 +116,6 @@ public class Player : MonoBehaviour {
         moveSpeed = _StandardSpeed;
     }
 	
-	// Update is called once per frame
 	void Update () {
         
     }

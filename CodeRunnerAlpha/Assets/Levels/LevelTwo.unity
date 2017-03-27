@@ -743,6 +743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 306913921}
+  downIcon: {fileID: 1618239190195016, guid: a39e22f0e3de0f54cae07886943593a0, type: 2}
 --- !u!131 &306913921
 GUITexture:
   m_ObjectHideFlags: 0
@@ -1171,6 +1172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 388387708}
+  rightIcon: {fileID: 1046771322652080, guid: 25717edd388e34144af6a4729022aa47, type: 2}
 --- !u!131 &388387708
 GUITexture:
   m_ObjectHideFlags: 0
@@ -4403,6 +4405,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 1009884570}
+  PathIcon: {fileID: 1485689225674870, guid: 5c277cf613d4b8a4a93ecb6475a76c5a, type: 2}
+  WallPathIcon: {fileID: 1077950103421626, guid: 4cbb487ef13a21245add93d63b6a4854,
+    type: 2}
 --- !u!131 &1009884570
 GUITexture:
   m_ObjectHideFlags: 0
@@ -4709,6 +4714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 1101688422}
+  upIcon: {fileID: 1523953682691728, guid: 435dee3354b99ca409497aa24a6822ec, type: 2}
 --- !u!1 &1114272350
 GameObject:
   m_ObjectHideFlags: 0
@@ -6088,6 +6094,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonTexture: {fileID: 0}
+  leftIcon: {fileID: 0}
 --- !u!131 &1446333276
 GUITexture:
   m_ObjectHideFlags: 0
@@ -7007,6 +7014,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chestObject: {fileID: 939410279}
   playerAnim: {fileID: 1438543041}
+  iconArray:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
   chestTextTexture: {fileID: 827092573}
   tiles:
   - {fileID: 1919032943}
