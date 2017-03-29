@@ -12,10 +12,12 @@ public class LevelLayout : MonoBehaviour {
     public GameObject       chestObject;
     public Animator         playerAnim;
 
-    public Vector2[]        iconArray = new Vector2[18];
-    private int             _currentIconArrayIndex = 0;
+    private const int       _IconArrayLength = 18;
+    public Vector2[]        iconArray = new Vector2[_IconArrayLength];
+    private static int      _currentIconArrayIndex = 0;
     
     public GUITexture       chestTextTexture;
+    public GameObject       hole;
 
     public Tile[]           tiles = new Tile[48];       // WARNING : DO NOT CHANGE TO PRIVATE (would have to re-do all the tiles in the editor)
    
@@ -23,7 +25,7 @@ public class LevelLayout : MonoBehaviour {
     private static bool     _isChestTextEnabled = false;
     
     public float            rewardTextTimer = 3.2f;
-    public bool             isChestFound = false;
+   
 
     public int CurrentIconArrayIndex
     {
@@ -75,7 +77,11 @@ public class LevelLayout : MonoBehaviour {
             if (aTile.isChestTile)
             {               
                 chestObject.transform.position = aTile.transform.position;
-            }        
+            }    
+            if(aTile.tileType == Tile.TypeOfTile.Hole)
+            {
+                Instantiate(hole, aTile.transform.position, Quaternion.identity);
+            }    
             pos++;
         }
     }

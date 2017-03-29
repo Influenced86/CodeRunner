@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class Compile : TouchManager
 {
-    private GameObject      _playerObject;
-    private Player          _player;
+    private static GameObject       _playerObject;
+    private static Player           _player;
 
-    private GameObject      _levelObject;
-    private LevelLayout     _levelLayout;
+    private static GameObject       _levelObject;
+    private static LevelLayout      _levelLayout;
 
-    private GameObject      _playerControlsObject;
-    private PlayerControls  _playerControls;
+    private static GameObject       _playerControlsObject;
+    private static PlayerControls   _playerControls;
 
-    private GameObject      _cancelObject;
-    private CancelCommand   _cancel;
+    private static GameObject       _cancelObject;
+    private static CancelCommand    _cancel;
 
     public GameObject       PathIcon;
     public GameObject       WallPathIcon;
@@ -23,7 +23,7 @@ public class Compile : TouchManager
     private static float    _moveTime = 0;
     private static bool     _moveCheck = false;   
     private static bool     _isCompile = false;
-    private static int  _compileListIterator = 0;
+    private static int      _compileListIterator = 0;
 
     public int CompileListIterator
     {
@@ -93,11 +93,22 @@ public class Compile : TouchManager
                     SceneManager.LoadScene("LevelFive");
                     _levelLayout.LevelNumber = 5;
                     break;
+                case 5:
+                    EndOfCompile();
+                    SceneManager.LoadScene("LevelSix");
+                    _levelLayout.LevelNumber = 6;
+                    break;
+                case 6:
+                    EndOfCompile();
+                    SceneManager.LoadScene("LevelSeven");
+                    _levelLayout.LevelNumber = 7;
+                    break;
+
             }
         }
     }
     // Checks the current level to give out the  
-    // correct reward from that level's chest - //
+    // correct reward from that level's chest
     private void ChestCheck()
     {
         Debug.Log("You reached a chest!");
@@ -119,6 +130,25 @@ public class Compile : TouchManager
                 _playerControls.IsLeftEnabled = true;
                 break;
 
+        }
+    }
+
+    private void HoleCheck()
+    {
+        switch (_levelLayout.LevelNumber)
+        {
+            case 6:
+            case 7:
+                if (_levelLayout.tiles[_player.CurrentGridCoordinate].tileType == Tile.TypeOfTile.Hole)
+                {
+                    DestroyClones();
+                    _player.transform.position = _levelLayout.tiles[6].transform.position;
+                    _player.CurrentGridCoordinate = 6;
+                    _player.CurrentCompileCoordinate = 6;
+                    EndOfCompile();        
+                }
+                break;
+          
         }
     }
 
@@ -187,8 +217,9 @@ public class Compile : TouchManager
         _player.CurrentCompileCoordinate = _player.CurrentGridCoordinate;
         _player.moveSpeed = _player.StandardSpeed;
         _compileListIterator = 0;
+        
         _isCompile = false;
-        CancelAnim();    
+        CancelAnim();
     }
 
     // Sets up next path icon during compile movement. Determined by the difference in value between the current
@@ -255,13 +286,12 @@ public class Compile : TouchManager
                 // Set next path movement icon
                 SetupPathIcons(nextGridCoordinate);
                 // If the next tile on the list is a wall, stop
-                if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Wall) EndOfCompile();              
+                if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Wall)    EndOfCompile();              
                 if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Chest)   ChestCheck();
                 if (_levelLayout.tiles[_player.moveList[_compileListIterator].cpCoordinate].tileType == Tile.TypeOfTile.Slow)    _player.moveSpeed = _player.SlowSpeed;
-                  
+            
                 // Setup and perform movement to current tile in the list
-                MoveCheck();
-               
+                MoveCheck();              
                 // Move player to next tile in list
                 _player.transform.position = Vector2.Lerp(_levelLayout.tiles[_player.CurrentGridCoordinate].transform.position, _player.moveList[_compileListIterator].cpTransform.position, _moveTime);
                 // The more moves the player makes, the faster the player moves
@@ -269,11 +299,15 @@ public class Compile : TouchManager
                 // Once the player has reached the next tile, update grid index position of player
                 if (_player.transform.position == _player.moveList[_compileListIterator].cpTransform.position)
                 {
+                    
                     CancelAnim();
-                    _player.CurrentGridCoordinate = _player.moveList[_compileListIterator].cpCoordinate;
+                    _player.CurrentGridCoordinate = _player.moveList[_compileListIterator].cpCoordinate;                   
                     _player.transform.position = _player.moveList[_compileListIterator].cpTransform.position;
                     _moveCheck = false;
                     _compileListIterator = _compileListIterator + 1;
+                    // If there's a hole, reset the level
+                    HoleCheck();
+                    // If it's the goal, load the next level                 
                     GoalCheck();
                     // If it's the last position in the list, stop
                     if (_compileListIterator == _player.moveList.Count)

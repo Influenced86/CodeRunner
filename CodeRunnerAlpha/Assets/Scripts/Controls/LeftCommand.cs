@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class LeftCommand : TouchManager, ICommand
 {
-    private GameObject      _playerObject;
-    private Player          _player;
+    private static GameObject   _playerObject;
+    private static Player       _player;
 
-    private GameObject      _levelLayoutObject;
-    private LevelLayout     _levelLayout;
+    private static GameObject   _levelLayoutObject;
+    private static LevelLayout  _levelLayout;
 
-    private GameObject      _compileObject;
-    private Compile         _compile;
+    private static GameObject   _compileObject;
+    private static Compile      _compile;
 
     public GameObject       leftIcon;
 

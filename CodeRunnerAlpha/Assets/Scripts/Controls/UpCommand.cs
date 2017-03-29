@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class UpCommand : TouchManager, ICommand
 {
-    private GameObject      _playerObject;
-    private Player          _player;
-    
-    private GameObject      _levelLayoutObject;
-    private LevelLayout     _levelLayout;
+    private static GameObject   _playerObject;
+    private static Player       _player;
 
-    private GameObject      _compileObject;
-    private Compile         _compile;
+    private static GameObject   _levelLayoutObject;
+    private static LevelLayout  _levelLayout;
 
+    private static GameObject   _compileObject;
+    private static Compile      _compile;
+
+   
     public GameObject       upIcon;
 
     private const int       _Up = 6;
@@ -48,6 +49,8 @@ public class UpCommand : TouchManager, ICommand
 
         _compileObject = GameObject.Find("Compile");
         _compile = _compileObject.GetComponent<Compile>();
+
+        
     }
 	
 	void Update () {

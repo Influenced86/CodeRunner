@@ -10,12 +10,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerControls : MonoBehaviour {
 
-    private static int _repeat;
 
     private GameObject _compileObject;
     private Compile _compile;
-
-    
 
     private GameObject _playerObject;
     private Player _player;
@@ -29,27 +26,19 @@ public class PlayerControls : MonoBehaviour {
     public GUITexture downButtonTexture;
     public GUITexture rightButtonTexture;
     public GUITexture leftButtonTexture;
-    
+    public GUITexture repeatButtonTexture;
+
     // - Enable or disable the button controls - //
     private static bool _isForwardEnabled = true;
     private static bool _isRightEnabled = false;
     private static bool _isLeftEnabled = false;
     private static bool _isBackwardEnabled = false;
-    private static bool _isRepeatEnabled = false;
+    private static bool _isRepeatEnabled = true;
 
     private GameObject levelLayoutObject;
     private LevelLayout levelLayout;
 
-    // -------------------------------------------
-
-    //public GUITexture repeatButtonTexture = null;
-    //public GUITexture repeatButtonTexture0 = null;
-    //public GUITexture repeatButtonTexture1 = null;
-    //public GUITexture repeatButtonTexture2 = null;
-    //public GUITexture repeatButtonTexture3 = null;
-    //public GUITexture repeatButtonTexture4 = null;
-
-    // -------------------------------------------
+   
 
 
     //// ------------------------------------------------------
@@ -135,21 +124,8 @@ public class PlayerControls : MonoBehaviour {
         rightButtonTexture.gameObject.SetActive(_isRightEnabled);
         leftButtonTexture.gameObject.SetActive(_isLeftEnabled);
         downButtonTexture.gameObject.SetActive(_isBackwardEnabled);
-        //repeatButtonTexture.gameObject.SetActive(_isRepeatEnabled);
-        //if(_compile.GetIsCompile())
-        //{
-        //    _compile.buttonTexture.color = Color.gray;
-            
-        //}
-        //else
-        //{
-        //    _compile.buttonTexture.color = Color.white;
-        //    if(_player.moveCount > 0)
-        //    {
-        //        _cancel.buttonTexture.color = Color.white;
-        //    }
-            
-        //}
+        repeatButtonTexture.gameObject.SetActive(_isRepeatEnabled);
+      
 
         
     }

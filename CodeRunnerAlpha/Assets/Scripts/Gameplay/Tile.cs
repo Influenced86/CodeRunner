@@ -42,7 +42,4 @@ public class Tile : MonoBehaviour {
         tileType = TypeOfTile.Wall;
     }
  
-    
-
-  
 }

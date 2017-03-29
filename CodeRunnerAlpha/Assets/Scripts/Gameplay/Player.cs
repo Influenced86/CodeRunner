@@ -15,20 +15,26 @@ public class Player : MonoBehaviour {
     public GameObject       playerObject;
     public Animator         playerAnim;
     // The level
-    private GameObject      _level;
-    private LevelLayout     _levelLayout;
+    private static GameObject      _level;
+    private static LevelLayout     _levelLayout;
     // The compiler
-    private GameObject      _compileObject;
-    private Compile         _compile;
+    private static GameObject      _compileObject;
+    private static Compile         _compile;
+    // The repeat
+    private static GameObject      _repeatObject;
+    private static RepeatCommand   _repeat;
 
     // Used to store each compile movement, grid index value and tile transform
     public List<CompilePair> moveList = new List<CompilePair>();
 
     public float            moveSpeed = 1.0f;
     public const float      CompileSpeedIncrease = 0.014f;
+    public const float      ReapeatSpeedIncrease = 0.15f;
     private const float     _SlowSpeed = 0.7f;
     private const float     _StandardSpeed = 1.0f;
     private const float     _RepeatSpeed = 1.0f;
+    private const int       _MaxInBounds = 47;
+    private const int       _MinInBounds = 0;
    
     private static int      _currentGridCoordinate;
     private static int      _currentCompileCoordinate;
@@ -64,7 +70,7 @@ public class Player : MonoBehaviour {
             // Updates the grid coordindate for the compile 
             _currentCompileCoordinate += tileAmount;
             // Only add to the list if it's not out of bounds
-            if (_currentCompileCoordinate >= 0 && _currentCompileCoordinate <= 47)
+            if (_currentCompileCoordinate >= _MinInBounds && _currentCompileCoordinate <= _MaxInBounds)
             {
                 var gridPos = _currentCompileCoordinate;
                 // Setup pair to add to compile list
@@ -72,7 +78,13 @@ public class Player : MonoBehaviour {
                 compilePair.cpCoordinate = gridPos;
                 compilePair.cpTransform = _levelLayout.tiles[gridPos].transform;
                 moveList.Add(compilePair);
-                
+                // If repeat is active, add moves until repeat is zero
+                if (_repeat.RepeatValue != 0)
+                {
+                    _repeat.RepeatValue--;
+                    AddNewPosition(tileAmount);
+                }
+                            
             }
             // If out of bounds, return to previous compile coordinate
             else
@@ -85,14 +97,17 @@ public class Player : MonoBehaviour {
         }
        
     }
+
+ 
     
     // Cancel the compile setup by resetting position and clearing the list, only if it's not empty
     public void Cancel()
     {
+        _repeat.RepeatValue = 0;
         // Only cancel the move set IF there is more than one move in the list AND is not compiling
         if (moveList.Count > 0 && !_compile.GetIsCompile())
         {     
-            moveList.Clear();
+            moveList.Clear();            
             _currentCompileCoordinate = _currentGridCoordinate;
             Debug.Log("Move count total: " + moveList.Count);
             Debug.Log("Current compile position: " + _currentCompileCoordinate);
@@ -112,6 +127,9 @@ public class Player : MonoBehaviour {
 
         _compileObject = GameObject.Find("Compile");
         _compile = _compileObject.GetComponent<Compile>();
+
+        _repeatObject = GameObject.Find("Repeat");
+        _repeat = _repeatObject.GetComponent<RepeatCommand>();
 
         moveSpeed = _StandardSpeed;
     }

@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class CancelCommand : TouchManager, ICommand
 {
-    private GameObject      _playerObject;
-    private Player          _player;
+    private static GameObject      _playerObject;
+    private static Player          _player;
 
-    private GameObject      _levelLayoutObject;
-    private LevelLayout     _levelLayout;
-
+    private static GameObject      _levelLayoutObject;
+    private static LevelLayout     _levelLayout;
 
     // Run each time player presses corresponding button (texture)
     public void Execute(Player aPlayer)
