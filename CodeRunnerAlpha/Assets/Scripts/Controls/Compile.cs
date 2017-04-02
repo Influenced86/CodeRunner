@@ -129,6 +129,10 @@ public class Compile : TouchManager
                 _levelLayout.IsChestTextEnabled = true;
                 _playerControls.IsLeftEnabled = true;
                 break;
+            case 7:
+                EndOfCompile();
+                // TODO: Unlock repeat and enable reward text
+                break;
 
         }
     }

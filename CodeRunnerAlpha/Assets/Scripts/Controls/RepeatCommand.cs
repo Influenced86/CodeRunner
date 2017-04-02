@@ -13,20 +13,21 @@ public class RepeatCommand : TouchManager, ICommand
     private static GameObject _compileObject;
     private static Compile _compile;
 
-
+    private const int _RepeatCap = 5;
     private int _repeatValue = 0;
     public int RepeatValue
     {
         get { return _repeatValue; }
         set { _repeatValue = value; }
     }
-
+    // Textures for each numbered repeat button
     public GUITexture repeatButtonTexture0;
     public GUITexture repeatButtonTexture1;
     public GUITexture repeatButtonTexture2;
     public GUITexture repeatButtonTexture3;
     public GUITexture repeatButtonTexture4;
 
+    // Sets the sprite of the repeat button depending on how many times its been touched
     private void SetRepeatTexture()
     {
         switch (_repeatValue)
@@ -55,17 +56,14 @@ public class RepeatCommand : TouchManager, ICommand
         if (!_compile.GetIsCompile())
         {
             _repeatValue++;
-            if(_repeatValue == 5)
+            if(_repeatValue == _RepeatCap)
             {
                 _repeatValue = 0;
             }
             //Changes the repeat button texture to match the amount of repeats the player wishes to use
             SetRepeatTexture();
             Debug.Log("Repeat value: " + _repeatValue);
-            //// Spawn move icon
-            //Instantiate(downIcon, _levelLayout.iconArray[_levelLayout.CurrentIconArrayIndex], Quaternion.identity);
-            //// Update array index if array isn't full
-            //if (_levelLayout.CurrentIconArrayIndex < 17) _levelLayout.CurrentIconArrayIndex++;
+            
         }
     }
 
