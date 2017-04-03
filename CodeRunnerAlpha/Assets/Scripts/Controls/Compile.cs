@@ -355,18 +355,18 @@ public class Compile : TouchManager
         // If buttons are usable (moves are declared), brighten button colour
         if(_player.moveList.Count > 0 && !_isCompile)
         {
-            buttonTexture.color = Color.white;
-            _cancel.buttonTexture.color = Color.white;
+            currentButtonTexture.color = Color.white;
+            _cancel.currentButtonTexture.color = Color.white;
         }
         // Otherwise darken out buttons
         else 
         {
-            buttonTexture.color = new Color(0.7f, 0.7f, 0.7f);
-            _cancel.buttonTexture.color = new Color(0.4f, 0.4f, 0.4f);
+            currentButtonTexture.color = new Color(0.7f, 0.7f, 0.7f);
+            _cancel.currentButtonTexture.color = new Color(0.4f, 0.4f, 0.4f);
         }
         // Compile
         Go();       
-        TouchInput(buttonTexture);
+        TouchInput(currentButtonTexture);
         
     }
 }

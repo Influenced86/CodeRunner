@@ -33,19 +33,19 @@ public class RepeatCommand : TouchManager, ICommand
         switch (_repeatValue)
         {
             case 1:
-                buttonTexture.texture = repeatButtonTexture1.texture;
+                currentButtonTexture.texture = repeatButtonTexture1.texture;
                 break;
             case 2:
-                buttonTexture.texture = repeatButtonTexture2.texture;
+                currentButtonTexture.texture = repeatButtonTexture2.texture;
                 break;
             case 3:
-                buttonTexture.texture = repeatButtonTexture3.texture;
+                currentButtonTexture.texture = repeatButtonTexture3.texture;
                 break;
             case 4:
-                buttonTexture.texture = repeatButtonTexture4.texture;
+                currentButtonTexture.texture = repeatButtonTexture4.texture;
                 break;
             case 0:
-                buttonTexture.texture = repeatButtonTexture0.texture;
+                currentButtonTexture.texture = repeatButtonTexture0.texture;
                 break;
         }
     }
@@ -89,7 +89,7 @@ public class RepeatCommand : TouchManager, ICommand
 
     // Update is called once per frame
     void Update () {
-        TouchInput(buttonTexture);
+        TouchInput(currentButtonTexture);
         SetRepeatTexture();
 	}
 }

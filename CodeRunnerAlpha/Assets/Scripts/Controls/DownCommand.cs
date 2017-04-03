@@ -13,7 +13,15 @@ public class DownCommand : TouchManager, ICommand
     private static GameObject   _compileObject;
     private static Compile      _compile;
 
-    public GameObject       downIcon;
+    private static GameObject _repeatObject;
+    private static RepeatCommand _repeat;
+
+    public GameObject currentDownIcon;
+    public GameObject downIcon;
+    public GameObject downIcon1;
+    public GameObject downIcon2;
+    public GameObject downIcon3;
+    public GameObject downIcon4;
 
     private const int       _Down = -6;
     
@@ -24,9 +32,31 @@ public class DownCommand : TouchManager, ICommand
         if (!_compile.GetIsCompile())
         {
             // Spawn move icon
-            Instantiate(downIcon, _levelLayout.iconArray[_levelLayout.CurrentIconArrayIndex], Quaternion.identity);
+            Instantiate(currentDownIcon, _levelLayout.iconArray[_levelLayout.CurrentIconArrayIndex], Quaternion.identity);
             // Update array index if array isn't full
             if (_levelLayout.CurrentIconArrayIndex < 17) _levelLayout.CurrentIconArrayIndex++;
+        }
+    }
+
+    private void SetupDownIcon(int repeatNum)
+    {
+        switch (repeatNum)
+        {
+            case 1:
+                currentDownIcon = downIcon1;
+                break;
+            case 2:
+                currentDownIcon = downIcon2;
+                break;
+            case 3:
+                currentDownIcon = downIcon3;
+                break;
+            case 4:
+                currentDownIcon = downIcon4;
+                break;
+            case 0:
+                currentDownIcon = downIcon;
+                break;
         }
     }
 
@@ -48,11 +78,18 @@ public class DownCommand : TouchManager, ICommand
 
         _compileObject = GameObject.Find("Compile");
         _compile = _compileObject.GetComponent<Compile>();
+
+        _repeatObject = GameObject.Find("Repeat");
+        _repeat = _repeatObject.GetComponent<RepeatCommand>();
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        TouchInput(buttonTexture);
+        SetupButtonTexture(_repeat.RepeatValue);
+        SetupDownIcon(_repeat.RepeatValue);
+        TouchInput(currentButtonTexture);
+
+
 	}
 }

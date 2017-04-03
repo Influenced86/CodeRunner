@@ -89,24 +89,23 @@ public class LevelLayout : MonoBehaviour {
     // Sets up the positions for the direction icon spawns in the level
     private void SetupIconDirectionPosition()
     {
-        iconArray[0] =  tiles[6].transform.position;
-        iconArray[1] =  tiles[12].transform.position;
-        iconArray[2] =  tiles[18].transform.position;
-        iconArray[3] =  tiles[24].transform.position;
-        iconArray[4] =  tiles[30].transform.position;
-        iconArray[5] =  tiles[36].transform.position;
-        iconArray[6] =  tiles[42].transform.position;
-        iconArray[7] =  tiles[43].transform.position;
-        iconArray[8] =  tiles[44].transform.position;
-        iconArray[9] =  tiles[45].transform.position;
-        iconArray[10] = tiles[46].transform.position;
-        iconArray[11] = tiles[47].transform.position;
-        iconArray[12] = tiles[41].transform.position;
-        iconArray[13] = tiles[35].transform.position;
-        iconArray[14] = tiles[29].transform.position;
-        iconArray[15] = tiles[23].transform.position;
-        iconArray[16] = tiles[17].transform.position;
-        iconArray[17] = tiles[11].transform.position;
+        var iconIndex = 0;
+        for(int i = 42; i <= 47; ++i)
+        {
+            iconArray[iconIndex] = tiles[i].transform.position;
+            iconIndex++;
+        }
+        for (int i = 36; i <= 41; ++i)
+        {
+            iconArray[iconIndex] = tiles[i].transform.position;
+            iconIndex++;
+        }
+        for (int i = 30; i <= 35; ++i)
+        {
+            iconArray[iconIndex] = tiles[i].transform.position;
+            iconIndex++;
+        }
+        
     }
   
     void Start () {

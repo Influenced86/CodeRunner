@@ -43,6 +43,6 @@ public class CancelCommand : TouchManager, ICommand
 	
 	// Update is called once per frame
 	void Update () {
-        TouchInput(buttonTexture);
+        TouchInput(currentButtonTexture);
 	}
 }

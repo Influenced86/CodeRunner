@@ -13,8 +13,16 @@ public class UpCommand : TouchManager, ICommand
     private static GameObject   _compileObject;
     private static Compile      _compile;
 
-   
+    private static GameObject       _repeatObject;
+    private static RepeatCommand    _repeat;
+ 
+    public GameObject       currentIcon;
     public GameObject       upIcon;
+    public GameObject       upIcon1;
+    public GameObject       upIcon2;
+    public GameObject       upIcon3;
+    public GameObject       upIcon4;
+
 
     private const int       _Up = 6;
 
@@ -25,9 +33,31 @@ public class UpCommand : TouchManager, ICommand
         if (!_compile.GetIsCompile())
         {
             // Spawn move icon
-            Instantiate(upIcon, _levelLayout.iconArray[_levelLayout.CurrentIconArrayIndex], Quaternion.identity);
+            Instantiate(currentIcon, _levelLayout.iconArray[_levelLayout.CurrentIconArrayIndex], Quaternion.identity);
             // Update array index if array isn't full
             if (_levelLayout.CurrentIconArrayIndex < 17) _levelLayout.CurrentIconArrayIndex++;
+        }
+    }
+
+    private void SetupUpIcon(int repeatNum)
+    {
+        switch (repeatNum)
+        {
+            case 1:
+                currentIcon = upIcon1;
+                break;
+            case 2:
+                currentIcon = upIcon2;
+                break;
+            case 3:
+                currentIcon = upIcon3;
+                break;
+            case 4:
+                currentIcon = upIcon4;
+                break;
+            case 0:
+                currentIcon = upIcon;
+                break;
         }
     }
 
@@ -50,10 +80,16 @@ public class UpCommand : TouchManager, ICommand
         _compileObject = GameObject.Find("Compile");
         _compile = _compileObject.GetComponent<Compile>();
 
+        _repeatObject = GameObject.Find("Repeat");
+        _repeat = _repeatObject.GetComponent<RepeatCommand>();
+
         
     }
 	
 	void Update () {
-        TouchInput(buttonTexture);
+        SetupButtonTexture(_repeat.RepeatValue);
+        SetupUpIcon(_repeat.RepeatValue);
+        TouchInput(currentButtonTexture);
+        
 	}
 }

@@ -7,7 +7,35 @@ using System.Collections;
 
 public class TouchManager : MonoBehaviour {
 
-    public GUITexture   buttonTexture;
+    public GUITexture   currentButtonTexture;
+    public GUITexture   buttonTexture0;
+    public GUITexture   buttonTexture1;
+    public GUITexture   buttonTexture2;
+    public GUITexture   buttonTexture3;
+    public GUITexture   buttonTexture4;
+
+    public void SetupButtonTexture(int repeatNum)
+    {
+        switch(repeatNum)
+        {
+            case 1:
+                currentButtonTexture.texture = buttonTexture1.texture;
+                break;
+            case 2:
+                currentButtonTexture.texture = buttonTexture2.texture;
+                break;
+            case 3:
+                currentButtonTexture.texture = buttonTexture3.texture;
+                break;
+            case 4:
+                currentButtonTexture.texture = buttonTexture4.texture;
+                break;
+            case 0:
+                currentButtonTexture.texture = buttonTexture0.texture;
+                break;
+        }
+    }
+
 
     // Gets the type of input from the user and sends an appropriate 
     // message to which PlayerControls takes care of
