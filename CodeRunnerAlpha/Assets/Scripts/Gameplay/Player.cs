@@ -83,8 +83,7 @@ public class Player : MonoBehaviour {
                 {
                     _repeat.RepeatValue--;
                     AddNewPosition(tileAmount);
-                }
-                            
+                }                            
             }
             // If out of bounds, return to previous compile coordinate
             else

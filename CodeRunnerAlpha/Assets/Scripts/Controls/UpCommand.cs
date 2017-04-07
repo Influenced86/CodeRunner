@@ -23,7 +23,6 @@ public class UpCommand : TouchManager, ICommand
     public GameObject       upIcon3;
     public GameObject       upIcon4;
 
-
     private const int       _Up = 6;
 
     // Run each time player presses corresponding button (texture)

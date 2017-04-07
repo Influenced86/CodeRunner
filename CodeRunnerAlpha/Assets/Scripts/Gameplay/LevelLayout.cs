@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-// Setups up the layout of the level, including - tile positions, button list icon positions,
+// Sets up the layout of the level, including - tile positions, button list icon positions,
 // chests, chest text.
 public class LevelLayout : MonoBehaviour {
   
@@ -22,11 +22,10 @@ public class LevelLayout : MonoBehaviour {
     public Tile[]           tiles = new Tile[48];       // WARNING : DO NOT CHANGE TO PRIVATE (would have to re-do all the tiles in the editor)
    
     private static int      _levelNumber = 1;
-    private static bool     _isChestTextEnabled = false;
+    private static bool     _isChestTextEnabled;
     
     public float            rewardTextTimer = 3.2f;
    
-
     public int CurrentIconArrayIndex
     {
         get { return _currentIconArrayIndex; }
@@ -86,7 +85,7 @@ public class LevelLayout : MonoBehaviour {
         }
     }
 
-    // Sets up the positions for the direction icon spawns in the level
+    // Sets up the positions for the direction icon spawns in the level (left to right)
     private void SetupIconDirectionPosition()
     {
         var iconIndex = 0;
@@ -111,7 +110,8 @@ public class LevelLayout : MonoBehaviour {
     void Start () {
         _playerObject = GameObject.Find("Player");
         _player = _playerObject.GetComponent<Player>();
-       
+        _isChestTextEnabled = false;
+        _currentIconArrayIndex = 0;
         LevelSetup();
         SetupIconDirectionPosition();
     }

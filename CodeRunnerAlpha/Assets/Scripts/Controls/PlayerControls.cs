@@ -38,25 +38,6 @@ public class PlayerControls : MonoBehaviour {
     private GameObject levelLayoutObject;
     private LevelLayout levelLayout;
 
-   
-
-
-    //// ------------------------------------------------------
-
-    // - GETTERS - SETTERS - PROPERTIES - // ------
-    //public int GetRepeat()
-    //{
-    //    return _repeat;
-    //}
-    //public void DecrementRepeat()
-    //{
-    //    _repeat -= 1;
-    //}
-    //public void ResetRepeat()
-    //{
-    //    _repeat = -1;
-    //}
-
     public bool IsRightEnabled
     {
         get { return _isRightEnabled; }
@@ -93,30 +74,9 @@ public class PlayerControls : MonoBehaviour {
         
     }
 
-    // Changes the repeat button texture to match the amount of repeats the player wishes to use
-    //public void SetRepeatButtonTexture()
-    //{
-    //    switch (_repeat)
-    //    {  
-    //        case 1:
-    //            repeatButtonTexture.texture = repeatButtonTexture1.texture;
-    //            break;
-    //        case 2:
-    //            repeatButtonTexture.texture = repeatButtonTexture2.texture;
-    //            break;
-    //        case 3:
-    //            repeatButtonTexture.texture = repeatButtonTexture3.texture;
-    //            break;
-    //        case 4:
-    //            repeatButtonTexture.texture = repeatButtonTexture4.texture;
-    //            break;
-    //    }
-    //}
 
-    //---------------------------------------------------------------------------
-
-    // - BUTTON ACTIVE CHECK - Checks whether the buttons have been unlocked by the player. 
-    // Bools are static and are created within LevelLayout - //
+    // Checks whether the buttons have been unlocked by the player. 
+    // Bools are static and are created within LevelLayout
     public void ButtonActiveCheck()
     {
         
@@ -125,9 +85,7 @@ public class PlayerControls : MonoBehaviour {
         leftButtonTexture.gameObject.SetActive(_isLeftEnabled);
         downButtonTexture.gameObject.SetActive(_isBackwardEnabled);
         repeatButtonTexture.gameObject.SetActive(_isRepeatEnabled);
-      
-
-        
+             
     }
 
    
@@ -135,15 +93,12 @@ public class PlayerControls : MonoBehaviour {
 
 
     void Start () {
-        //SetupButtons();
-        //ButtonActiveCheck();
+        
         levelLayoutObject = GameObject.Find("BackTiles");
         levelLayout = levelLayoutObject.GetComponent<LevelLayout>();
 
         _compileObject = GameObject.Find("Compile");
         _compile = _compileObject.GetComponent<Compile>();
-
-        
 
         _playerObject = GameObject.Find("Player");
         _player = _playerObject.GetComponent<Player>();
@@ -151,14 +106,9 @@ public class PlayerControls : MonoBehaviour {
     }
 
     void Update () {
-        // Resets repeat texture to 0
-        //if(_repeat == 0 || _repeat == -1)
-        //{
-        //    repeatButtonTexture.texture = repeatButtonTexture0.texture;
-        //}
-        //TouchInput(buttonTexture);
+        
         ButtonActiveCheck();
-        //SetRepeatButtonTexture();
+       
         
     }
 }

@@ -17,6 +17,9 @@ public class Compile : TouchManager
     private static GameObject       _cancelObject;
     private static CancelCommand    _cancel;
 
+    private static GameObject           _levelSelectManagerObject;
+    private static LevelSelectManager   _levelSelectManager; 
+
     public GameObject       PathIcon;
     public GameObject       WallPathIcon;
     
@@ -130,8 +133,7 @@ public class Compile : TouchManager
                 _playerControls.IsLeftEnabled = true;
                 break;
             case 7:
-                EndOfCompile();
-                // TODO: Unlock repeat and enable reward text
+                EndOfCompile();                
                 break;
 
         }
@@ -215,7 +217,7 @@ public class Compile : TouchManager
     }
 
     // Clears the movelist and sets up data ready for the next move. 
-    private void EndOfCompile()
+    public void EndOfCompile()
     {
         _player.moveList.Clear();
         _player.CurrentCompileCoordinate = _player.CurrentGridCoordinate;
@@ -282,7 +284,6 @@ public class Compile : TouchManager
             // Keep going until the last move has complete
             if(_compileListIterator < _player.moveList.Count)
             {
-               
                 // Work out the value difference between current tile index and next tile index
                 var nextGridCoordinate = _player.moveList[_compileListIterator].cpCoordinate - _player.CurrentGridCoordinate;
                 // Set player animation
@@ -297,13 +298,13 @@ public class Compile : TouchManager
                 // Setup and perform movement to current tile in the list
                 MoveCheck();              
                 // Move player to next tile in list
-                _player.transform.position = Vector2.Lerp(_levelLayout.tiles[_player.CurrentGridCoordinate].transform.position, _player.moveList[_compileListIterator].cpTransform.position, _moveTime);
+                _player.transform.position = Vector2.Lerp(_levelLayout.tiles[_player.CurrentGridCoordinate].transform.position,
+                    _player.moveList[_compileListIterator].cpTransform.position, _moveTime);
                 // The more moves the player makes, the faster the player moves
                 _player.moveSpeed += Player.CompileSpeedIncrease;
                 // Once the player has reached the next tile, update grid index position of player
                 if (_player.transform.position == _player.moveList[_compileListIterator].cpTransform.position)
-                {
-                    
+                {                    
                     CancelAnim();
                     _player.CurrentGridCoordinate = _player.moveList[_compileListIterator].cpCoordinate;                   
                     _player.transform.position = _player.moveList[_compileListIterator].cpTransform.position;
@@ -317,8 +318,7 @@ public class Compile : TouchManager
                     if (_compileListIterator == _player.moveList.Count)
                     {
                         DestroyClones();
-                        EndOfCompile();
-                       
+                        EndOfCompile();                      
                     }                       
                     // Recall function if there are still more items left in the list
                     Go();
@@ -347,6 +347,11 @@ public class Compile : TouchManager
 
         _cancelObject = GameObject.Find("Cancel");
         _cancel = _cancelObject.GetComponent<CancelCommand>();
+
+        _levelSelectManagerObject = GameObject.Find("LevelSelectButtons");
+        _levelSelectManager = _levelSelectManagerObject.GetComponent<LevelSelectManager>();
+
+        EndOfCompile();
     }
     
 	// Update is called once per frame
