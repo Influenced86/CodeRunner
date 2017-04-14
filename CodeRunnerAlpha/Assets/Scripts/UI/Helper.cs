@@ -9,7 +9,7 @@ public class Helper : TouchManager
     public enum HelperType { helperForward, helperChest, helperGoal, helperMud };
     public HelperType helperType;
    
-    public GUITexture       helperTexture;
+    public GUITexture       helperTexture = null;
     public GUITexture       textTexture;
    
     private Vector3         _vInitialPosition;

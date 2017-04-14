@@ -11,8 +11,8 @@ public class LevelSelectManager : TouchManager {
    
     private void OnFirstTouchBegan()
     {
-        if (!_isButtonsOn) _isButtonsOn = true;
-        else _isButtonsOn = false;
+        if (!_isButtonsOn)  _isButtonsOn = true;
+        else                _isButtonsOn = false;
         foreach(GUITexture tex in leveButton)
         {
             tex.gameObject.SetActive(_isButtonsOn);
